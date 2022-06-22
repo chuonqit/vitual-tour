@@ -80,7 +80,7 @@ const VitualTourControl = ({ viewer, toggle }: Props) => {
         )}
         {viewer?.getInfo().galleries && viewer?.getInfo().galleries.length > 0 && (
           <button className={styles["controls-bottom-button"]}>
-            <FaRegImages size={16} />
+            <FaRegImages />
           </button>
         )}
       </div>

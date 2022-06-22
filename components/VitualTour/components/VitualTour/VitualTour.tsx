@@ -305,7 +305,13 @@ const VitualTour = (props: Props) => {
           </p>
         </div>
       )}
-      <div ref={pannellumRef} className={styles["vitual-tour-wrapper"]}></div>
+      <div
+        ref={pannellumRef}
+        className={styles["vitual-tour-wrapper"]}
+        style={{
+          transform: toggle ? "translateY(0)" : "translateY(-106px)",
+        }}
+      ></div>
       <VitualTourGallery
         galleries={galleries}
         sceneId={sceneId}
