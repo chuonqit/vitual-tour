@@ -227,6 +227,14 @@ const Pannellum = (function (window, document, undefined) {
     infoDisplay.load.box.appendChild(infoDisplay.load.msg);
     uiContainer.appendChild(infoDisplay.load.box);
 
+    // custom loading
+    infoDisplay.load.boxCustom = document.createElement("div");
+    infoDisplay.load.boxCustomLoader = document.createElement("div");
+    infoDisplay.load.boxCustom.className = "pnlm-load-box-custom";
+    infoDisplay.load.boxCustomLoader.className = "loader";
+    infoDisplay.load.boxCustom.appendChild(infoDisplay.load.boxCustomLoader);
+    uiContainer.appendChild(infoDisplay.load.boxCustom);
+
     // Error message
     infoDisplay.errorMsg = document.createElement("div");
     infoDisplay.errorMsg.className = "pnlm-error-msg pnlm-info-box";
@@ -2140,7 +2148,7 @@ const Pannellum = (function (window, document, undefined) {
       createHotSpots();
 
       // Hide loading display
-      infoDisplay.load.box.style.display = "none";
+      infoDisplay.load.boxCustom.style.display = "none";
       if (preview !== undefined) {
         renderContainer.removeChild(preview);
         preview = undefined;
@@ -2562,9 +2570,9 @@ const Pannellum = (function (window, document, undefined) {
       }
 
       // Fill in load button label and loading box text
-      controls.load.innerHTML =
-        "<div><p>" + config.strings.loadButtonLabel + "</p></div>";
-      infoDisplay.load.boxp.innerHTML = config.strings.loadingLabel;
+      // controls.load.innerHTML =
+      //   "<div><p>" + config.strings.loadButtonLabel + "</p></div>";
+      // infoDisplay.load.boxp.innerHTML = config.strings.loadingLabel;
 
       // Process other options
       for (var key in config) {
@@ -2601,7 +2609,8 @@ const Pannellum = (function (window, document, undefined) {
             case "autoLoad":
               if (config[key] === true && renderer === undefined) {
                 // Show loading box
-                infoDisplay.load.box.style.display = "inline";
+                // infoDisplay.load.box.style.display = "inline";
+                infoDisplay.load.boxCustom.style.display = "flex";
                 // Hide load button
                 controls.load.style.display = "none";
                 // Initialize
@@ -2833,7 +2842,7 @@ const Pannellum = (function (window, document, undefined) {
 
       clearInteractionMessage();
       controls.load.style.display = "none";
-      infoDisplay.load.box.style.display = "inline";
+      infoDisplay.load.boxCustom.style.display = "flex";
       init();
     }
 

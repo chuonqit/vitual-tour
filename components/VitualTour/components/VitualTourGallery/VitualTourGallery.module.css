@@ -76,14 +76,15 @@
   z-index: 10000;
   text-align: center;
   padding-bottom: 10px;
+  cursor: pointer;
 }
 
 .pnlm-gallery-control button {
   margin-bottom: 5px;
   width: 20px;
   border: 0;
-  background-color: transparent;
   cursor: pointer;
+  background-color: transparent;
   transition: transform 250ms ease-in-out;
 }
 
@@ -99,7 +100,7 @@
   content: "prev";
   font-family: swiper-icons;
   font-size: 18px;
-  color: #007aff;
+  color: #ff5b00;
   font-weight: bolder;
 }
 

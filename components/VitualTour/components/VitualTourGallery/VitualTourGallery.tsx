@@ -35,21 +35,20 @@ const VitualTourGallery = ({
       }}
       className={styles["pnlm-gallery"]}
     >
-      <div className={styles["pnlm-gallery-control"]}>
+      <div className={styles["pnlm-gallery-control"]} onClick={onToggle}>
         <button
           className={
             styles[
               toggle ? "pnlm-gallery-control-up" : "pnlm-gallery-control-down"
             ]
           }
-          onClick={onToggle}
         ></button>
       </div>
       <Swiper
         slidesPerView={10}
         navigation={true}
         modules={[Navigation]}
-        className={styles["pnlm-gallery-container"]}
+        className={`${styles["pnlm-gallery-container"]} pnlm-gallery-container`}
       >
         {galleries?.map((item, idx) => (
           <SwiperSlide
