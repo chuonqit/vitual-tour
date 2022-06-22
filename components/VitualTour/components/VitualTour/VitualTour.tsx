@@ -185,7 +185,7 @@ const VitualTour = (props: Props) => {
       },
 
       info: {
-        name: "trường cao đăng fpt polytechnic",
+        name: "trường cao đẳng fpt polytechnic",
         content: "sdkakldajsdlajsdlajsdlkajsdlkasjdlkasd",
         galleries: [
           "https://swiperjs.com/demos/images/nature-1.jpg",

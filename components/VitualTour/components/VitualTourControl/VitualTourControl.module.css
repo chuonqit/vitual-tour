@@ -42,11 +42,9 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  font-size: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
 }
 
 .controls-bottom-button:hover {
