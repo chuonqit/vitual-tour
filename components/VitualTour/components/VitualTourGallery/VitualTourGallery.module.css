@@ -1,6 +1,8 @@
 .pnlm-gallery {
   user-select: none;
   transition: transform 250ms ease-in-out;
+  z-index: 9999;
+  user-select: none;
 }
 
 .pnlm-gallery-container {

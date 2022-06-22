@@ -43,7 +43,9 @@
   height: 30px;
   border-radius: 50%;
   font-size: 12px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .controls-bottom-button:hover {
