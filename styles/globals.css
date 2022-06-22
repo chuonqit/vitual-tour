@@ -1,5 +1,4 @@
 @import "../components/VitualTour/libs/pannellum.css";
-@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css";
 
 * {
   box-sizing: border-box;
@@ -7,4 +6,5 @@
 
 body {
   margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }

@@ -244,20 +244,20 @@ const Pannellum = (function (window, document, undefined) {
     uiContainer.appendChild(controls.container);
 
     // custom control
-    var customControl = document.createElement("div");
-    customControl.id = "controls";
-    customControl.innerHTML = `
-      <div class="ctrl" id="zoom-in">&plus;</div>
-      <div class="ctrl" id="zoom-out">&minus;</div>
-      <div class="ctrl" id="fullscreen">&#x2922;</div>
-    `;
-    uiContainer.appendChild(customControl);
+    // var customControl = document.createElement("div");
+    // customControl.id = "controls";
+    // customControl.innerHTML = `
+    //   <div class="ctrl" id="zoom-in">&plus;</div>
+    //   <div class="ctrl" id="zoom-out">&minus;</div>
+    //   <div class="ctrl" id="fullscreen">&#x2922;</div>
+    // `;
+    // uiContainer.appendChild(customControl);
 
-    document.getElementById("zoom-in").addEventListener("click", zoomIn);
-    document.getElementById("zoom-out").addEventListener("click", zoomOut);
-    document
-      .getElementById("fullscreen")
-      .addEventListener("click", toggleFullscreen);
+    // document.getElementById("zoom-in").addEventListener("click", zoomIn);
+    // document.getElementById("zoom-out").addEventListener("click", zoomOut);
+    // document
+    //   .getElementById("fullscreen")
+    //   .addEventListener("click", toggleFullscreen);
 
     // Load button
     controls.load = document.createElement("button");
@@ -323,148 +323,6 @@ const Pannellum = (function (window, document, undefined) {
       // permission prompt to access such events, this is no longer possible.
       controls.container.appendChild(controls.orientation);
       orientationSupport = true;
-    }
-
-    // gallery
-    if (initialConfig.galleries && initialConfig.galleries.length > 0) {
-      var gallery = document.createElement("div");
-      gallery.className = "pnlm-gallery-container";
-
-      var innerGallery = document.createElement("div");
-      innerGallery.className = "pnlm-gallery-inner";
-
-      var listGalleries = initialConfig.galleries;
-      var itemGalleries = "";
-      listGalleries.forEach((item) => {
-        itemGalleries += `<div class="pnlm-gallery-item" data-id="${item.sceneId}">
-          <img src="${item.image}"/>
-          <span>${item.label}</span>
-        </div>`;
-      });
-      innerGallery.innerHTML = itemGalleries;
-
-      var galleryControl = document.createElement("div");
-      galleryControl.className = "pnlm-gallery-control";
-      galleryControl.innerHTML = '<i class="fa-solid fa-chevron-down"></i>';
-
-      var galleryButtonPrev = document.createElement("div");
-      galleryButtonPrev.className = "pnlm-gallery-button-prev";
-      galleryButtonPrev.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
-
-      var galleryButtonNext = document.createElement("div");
-      galleryButtonNext.className = "pnlm-gallery-button-next";
-      galleryButtonNext.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
-
-      gallery.appendChild(galleryButtonPrev);
-      gallery.appendChild(galleryButtonNext);
-
-      gallery.appendChild(innerGallery);
-      gallery.appendChild(galleryControl);
-      uiContainer.appendChild(gallery);
-
-      const listItem = document.querySelectorAll(".pnlm-gallery-item");
-      listItem.forEach((item) => {
-        item.addEventListener("click", () => {
-          loadScene(item.dataset.id);
-        });
-      });
-
-      var pressed = false;
-      // var startX;
-      var x;
-      var galleryToggle;
-
-      let numberOfCards =
-        innerGallery.querySelectorAll(".pnlm-gallery-item").length;
-      let currentTranslate = 0;
-      let showItem = 11;
-
-      const checkCarouselEdge = (direction) => {
-        if (direction === "left") {
-          if (currentTranslate !== 0) {
-            return (currentTranslate += 168);
-          }
-        } else {
-          if (currentTranslate !== -168 * (numberOfCards - showItem)) {
-            return (currentTranslate -= 168);
-          }
-        }
-      };
-
-      // var index = 1;
-      // var galleryWidth = innerGallery.offsetWidth;
-      // var listItemGalleries = document.querySelectorAll(".pnlm-gallery-item");
-      // var itemGalleryWidth = listItemGalleries[0].offsetWidth;
-      // var itemGalleryCount = listItemGalleries.length;
-      galleryButtonPrev.addEventListener("click", () => {
-        innerGallery.style.transform = `translateX(${checkCarouselEdge(
-          "left"
-        )}px)`;
-      });
-      galleryButtonNext.addEventListener("click", () => {
-        innerGallery.style.transform = `translateX(${checkCarouselEdge(
-          "right"
-        )}px)`;
-      });
-
-      // gallery.addEventListener("mousedown", (e) => {
-      //   pressed = true;
-      //   startX = e.offsetX - innerGallery.offsetLeft;
-      //   gallery.classList.add("pnlm-grabbing");
-      //   gallery.classList.remove("pnlm-grab");
-      //   innerGallery.style.pointerEvents = "auto";
-      // });
-
-      // gallery.addEventListener("mouseenter", () => {
-      //   gallery.classList.add("pnlm-grab");
-      //   innerGallery.style.pointerEvents = "auto";
-      // });
-
-      // gallery.addEventListener("mouseup", () => {
-      //   gallery.classList.add("pnlm-grab");
-      //   gallery.classList.remove("pnlm-grabbing");
-      //   innerGallery.style.pointerEvents = "none";
-      //   pressed = false;
-      // });
-
-      // gallery.addEventListener("mousemove", (e) => {
-      //   if (!pressed) return;
-
-      //   // e.preventDefault();
-
-      //   x = e.offsetX;
-      //   innerGallery.style.left = `${x - startX}px`;
-
-      //   checkBoundaryGallery();
-      // });
-
-      // function checkBoundaryGallery() {
-      //   var outer = gallery.getBoundingClientRect();
-      //   var inner = innerGallery.getBoundingClientRect();
-
-      //   if (parseInt(innerGallery.style.left) > 0) {
-      //     innerGallery.style.left = "0px";
-      //   }
-
-      //   if (inner.width < outer.width) {
-      //     innerGallery.style.left = "0px";
-      //   }
-
-      //   if (inner.right < outer.right) {
-      //     innerGallery.style.left = `-${inner.width - outer.width}px`;
-      //   }
-      // }
-
-      galleryControl.onclick = function () {
-        galleryToggle = !galleryToggle;
-        gallery.style.transform = galleryToggle
-          ? "translateY(106px)"
-          : "translateY(0)";
-
-        galleryControl.innerHTML = galleryToggle
-          ? '<i class="fa-solid fa-chevron-up"></i>'
-          : '<i class="fa-solid fa-chevron-down"></i>';
-      };
     }
 
     // Compass
@@ -2559,6 +2417,7 @@ const Pannellum = (function (window, document, undefined) {
         if (hs.scale) {
           transform += " scale(" + origHfov / config.hfov / z + ")";
         }
+
         hs.div.style.webkitTransform = transform;
         hs.div.style.MozTransform = transform;
         hs.div.style.transform = transform;
@@ -2814,14 +2673,14 @@ const Pannellum = (function (window, document, undefined) {
       if (loaded && !error) {
         if (!fullscreenActive) {
           try {
-            if (container.requestFullscreen) {
-              container.requestFullscreen();
-            } else if (container.mozRequestFullScreen) {
-              container.mozRequestFullScreen();
-            } else if (container.msRequestFullscreen) {
-              container.msRequestFullscreen();
+            if (container.parentNode.requestFullscreen) {
+              container.parentNode.requestFullscreen();
+            } else if (container.parentNode.mozRequestFullScreen) {
+              container.parentNode.mozRequestFullScreen();
+            } else if (container.parentNode.msRequestFullscreen) {
+              container.parentNode.msRequestFullscreen();
             } else {
-              container.webkitRequestFullScreen();
+              container.parentNode.webkitRequestFullScreen();
             }
           } catch (event) {
             // Fullscreen doesn't work
@@ -3220,6 +3079,18 @@ const Pannellum = (function (window, document, undefined) {
      */
     this.getPitch = function () {
       return config.pitch;
+    };
+
+    this.getInfo = function () {
+      return config.info;
+    };
+
+    this.getRoom = function () {
+      return config.room;
+    };
+
+    this.getAnnotation = function () {
+      return config.annotation;
     };
 
     /**

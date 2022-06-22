@@ -1,0 +1,68 @@
+.vitual-tour {
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.vitual-tour-wrapper {
+  width: 100%;
+  height: 100vh;
+}
+
+.vitual-header {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  text-align: center;
+  width: 100%;
+  padding: 10px 0;
+  font-weight: bold;
+  color: #fff;
+  pointer-events: none;
+}
+
+.vitual-header-name {
+  text-transform: uppercase;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.vitual-header-room {
+  font-size: 12px;
+}
+
+.vitual-annotation {
+  background-color: #007aff;
+  color: rgb(255, 255, 255);
+  position: absolute;
+  min-width: 150px;
+  max-width: 280px;
+  width: 28%;
+  z-index: 40;
+  top: 45px;
+  left: 6px;
+  padding: 8px;
+  color: #ffffff;
+  border-radius: 5px;
+  pointer-events: none;
+  cursor: default;
+}
+
+.vitual-annotation hr {
+  color: rgb(255, 255, 255);
+  border-top: 1px solid rgb(255, 255, 255);
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
+}
+
+.vitual-annotation-title {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  font-size: 15px;
+}
+
+.vitual-annotation-content {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  font-size: 12px;
+}

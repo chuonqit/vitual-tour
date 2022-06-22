@@ -1,0 +1,132 @@
+.pnlm-gallery {
+  user-select: none;
+  transition: transform 250ms ease-in-out;
+}
+
+.pnlm-gallery-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 106px;
+  user-select: none;
+  z-index: 999;
+  background-color: rgba(255, 255, 255, 1);
+  transition: transform 250ms ease-in-out;
+}
+
+.pnlm-gallery-item {
+  box-shadow: 0 0 0 1px rgb(255 255 255);
+  padding: 3px 3px 0 3px;
+  height: 100px;
+  min-width: 162px;
+  width: 162px;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  opacity: 0.3;
+  transition: opacity 250ms ease-in-out;
+  position: relative;
+  cursor: pointer;
+}
+
+.pnlm-gallery-item-active {
+  opacity: 1;
+}
+
+.pnlm-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pnlm-gallery-item .pnlm-gallery-item--label {
+  color: #fff;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  font-size: 12px;
+  left: 0;
+  padding: 2px 0;
+  cursor: pointer;
+}
+
+.pnlm-gallery-item .pnlm-gallery-item--label span {
+  display: inline-block;
+  width: 80%;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+
+.pnlm-gallery-control {
+  position: absolute;
+  width: 100%;
+  bottom: 106px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 70%,
+    rgba(255, 255, 255, 0.5) 85%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  height: 25px;
+  left: 0;
+  z-index: 10000;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.pnlm-gallery-control button {
+  margin-bottom: 5px;
+  width: 20px;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+  transition: transform 250ms ease-in-out;
+}
+
+.pnlm-gallery-control-down {
+  transform: rotate(-90deg) !important;
+}
+
+.pnlm-gallery-control-up {
+  transform: rotate(90deg) !important;
+}
+
+.pnlm-gallery-control button::after {
+  content: "prev";
+  font-family: swiper-icons;
+  font-size: 18px;
+  color: #007aff;
+  font-weight: bolder;
+}
+
+.pnlm-gallery-button-prev,
+.pnlm-gallery-button-next {
+  position: absolute;
+  z-index: 11000;
+  position: absolute;
+  top: calc(50% - 12px);
+  font-size: 24px;
+  cursor: pointer;
+  width: 25px;
+  color: #fff;
+  transition: background-color 150ms ease-in-out;
+  text-align: center;
+  padding: 5px;
+  line-height: 0;
+}
+
+.pnlm-gallery-button-prev {
+  left: 0;
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.pnlm-gallery-button-next {
+  right: 0;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+}
