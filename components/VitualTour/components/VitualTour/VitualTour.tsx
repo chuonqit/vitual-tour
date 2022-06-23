@@ -254,9 +254,8 @@ const VitualTour = (props: Props) => {
     }
   }, [viewer, position, sceneId]);
 
-  const checkScreen = () => {
+  const checkScreenSlide = () => {
     if (window.innerWidth < 1000) {
-      setToggle(true);
       setSlidesPerView(5);
     }
     if (window.innerWidth < 768) {
@@ -266,17 +265,16 @@ const VitualTour = (props: Props) => {
       setSlidesPerView(2);
     }
     if (window.innerWidth > 1200) {
-      setToggle(false);
       setSlidesPerView(10);
     }
   };
 
   React.useEffect(() => {
-    checkScreen();
+    checkScreenSlide();
 
-    window.addEventListener("resize", checkScreen);
+    window.addEventListener("resize", checkScreenSlide);
 
-    return () => window.removeEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreenSlide);
   }, []);
 
   return (
@@ -286,7 +284,12 @@ const VitualTour = (props: Props) => {
         className={styles["vitual-tour"]}
         style={{ opacity: loaded ? 0 : 1 }}
       >
-        <VitualTourControl viewer={viewer} toggle={toggle} />
+        <VitualTourControl
+          viewer={viewer}
+          toggle={toggle}
+          content={info?.content}
+          galleries={info?.galleries}
+        />
         <div className={styles["vitual-header"]}>
           {info?.name && (
             <div className={styles["vitual-header-name"]}>{info.name}</div>

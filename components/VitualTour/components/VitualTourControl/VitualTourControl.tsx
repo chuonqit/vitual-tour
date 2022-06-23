@@ -1,11 +1,20 @@
 import React from "react";
 import Viewer from "../../libs/ViewerType";
 import styles from "./VitualTourControl.module.css";
-import { FaExpand, FaCompress, FaInfo, FaRegImages } from "react-icons/fa";
+import {
+  FaExpand,
+  FaCompress,
+  FaInfo,
+  FaRegImages,
+  FaSearchPlus,
+  FaSearchMinus,
+} from "react-icons/fa";
 
 type Props = {
   viewer?: Viewer;
   toggle: boolean;
+  content?: string;
+  galleries?: string[];
 };
 
 const InfoModal = ({
@@ -53,7 +62,7 @@ const InfoModal = ({
   ) : null;
 };
 
-const VitualTourControl = ({ viewer, toggle }: Props) => {
+const VitualTourControl = ({ viewer, toggle, content, galleries }: Props) => {
   const [infoModal, setInfoModal] = React.useState<boolean>(false);
   const [fullscreen, setFullscreen] = React.useState<boolean>(false);
 
@@ -62,9 +71,23 @@ const VitualTourControl = ({ viewer, toggle }: Props) => {
     viewer?.toggleFullscreen();
   };
 
+  const onZoomIn = () => {
+    viewer?.setHfov(viewer.getHfov() - 10);
+  };
+
+  const onZoomOut = () => {
+    viewer?.setHfov(viewer.getHfov() + 10);
+  };
+
   return (
     <>
       <div className={styles.controls}>
+        <div className={styles.ctrl} id="zoom-in" onClick={onZoomIn}>
+          <FaSearchPlus />
+        </div>
+        <div className={styles.ctrl} id="zoom-out" onClick={onZoomOut}>
+          <FaSearchMinus />
+        </div>
         <div className={styles.ctrl} id="fullscreen" onClick={onFullScreen}>
           {fullscreen ? <FaCompress /> : <FaExpand />}
         </div>
@@ -73,17 +96,17 @@ const VitualTourControl = ({ viewer, toggle }: Props) => {
         className={styles["controls-bottom"]}
         style={{ transform: toggle ? "translateY(100px)" : "translateY(0)" }}
       >
-        {viewer?.getInfo().content && (
+        {content && (
           <button
             className={styles["controls-bottom-button"]}
             onClick={() => setInfoModal(!infoModal)}
           >
-            <FaInfo size={16} />
+            <FaInfo />
           </button>
         )}
-        {viewer?.getInfo().galleries && viewer?.getInfo().galleries.length > 0 && (
+        {galleries && galleries.length > 0 && (
           <button className={styles["controls-bottom-button"]}>
-            <FaRegImages size={16} />
+            <FaRegImages />
           </button>
         )}
       </div>

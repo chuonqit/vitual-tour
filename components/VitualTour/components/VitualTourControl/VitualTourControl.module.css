@@ -7,7 +7,7 @@
   padding-bottom: 3px;
   z-index: 2;
   display: flex;
-  gap: 5px;
+  gap: 10px;
 }
 .ctrl {
   line-height: 0;
@@ -41,17 +41,12 @@
   cursor: pointer;
   width: 30px;
   height: 30px;
-  font-size: 16px !important;
+  font-size: 16px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.controls-bottom-button svg {
-  width: 16px;
-  height: 16px;
-  font-size: 16px !important;
+  line-height: 0;
 }
 
 .controls-bottom-button:hover {
