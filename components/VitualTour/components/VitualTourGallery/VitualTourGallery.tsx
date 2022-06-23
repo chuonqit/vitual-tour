@@ -32,10 +32,11 @@ const VitualTourGallery = ({
     if (galleries) {
       let index = galleries.findIndex((item) => item.sceneId === sceneId);
       index--;
-      if (index >= 0) {
-        const prevItem = galleries.find((item, key) => key === index)!;
-        loadScene(prevItem.sceneId);
+      if (index < 0) {
+        index = galleries.length - 1;
       }
+      const prevItem = galleries.find((item, key) => key === index)!;
+      loadScene(prevItem.sceneId);
     }
   };
 
@@ -43,12 +44,11 @@ const VitualTourGallery = ({
     if (galleries) {
       let index = galleries.findIndex((item) => item.sceneId === sceneId);
       index++;
-      if (index < galleries.length) {
-        const nextItem = galleries.find((item, key) => key === index)!;
-        loadScene(nextItem.sceneId);
-      } else {
+      if (index >= galleries.length) {
         index = 0;
       }
+      const nextItem = galleries.find((item, key) => key === index)!;
+      loadScene(nextItem.sceneId);
     }
   };
 
