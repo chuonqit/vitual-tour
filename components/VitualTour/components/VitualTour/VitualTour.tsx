@@ -34,14 +34,13 @@ const galleries = [
   },
 ];
 
-const Loading = ({ loaded }: { loaded: boolean }) => {
+const Loading = ({ speed }: { speed: number }) => {
   const [percent, setPercent] = React.useState<number>(0);
   const [styleProgressBar, setStyleProgressBar] = React.useState<string>("");
 
   React.useEffect(() => {
     let progressValue = 0;
     let progressEndValue = 100;
-    let speed = 10;
 
     let progress = setInterval(() => {
       progressValue++;
@@ -61,12 +60,14 @@ const Loading = ({ loaded }: { loaded: boolean }) => {
     return () => clearInterval(progress);
   }, []);
 
-  return loaded ? (
+  return (
     <div
       className={styles["loading-box"]}
       style={{
         backgroundImage:
           "url('https://caodang.fpt.edu.vn/wp-content/uploads/Poly-1-scaled.jpg')",
+        opacity: percent == 100 ? 0 : 1,
+        zIndex: percent == 100 ? -1 : 999,
       }}
     >
       <div
@@ -76,7 +77,7 @@ const Loading = ({ loaded }: { loaded: boolean }) => {
         <div className={styles["value-container"]}>{percent}%</div>
       </div>
     </div>
-  ) : null;
+  );
 };
 
 const VitualTour = (props: Props) => {
@@ -260,7 +261,7 @@ const VitualTour = (props: Props) => {
 
   return (
     <>
-      <Loading loaded={loaded} />
+      <Loading speed={20} />
       <div
         className={styles["vitual-tour"]}
         style={{ opacity: loaded ? 0 : 1 }}

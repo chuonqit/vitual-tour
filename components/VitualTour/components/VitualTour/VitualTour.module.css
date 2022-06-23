@@ -82,7 +82,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: opacity 250ms ease-in-out;
+  transition: opacity 1050ms ease-in-out, z-index 1050ms ease-in-out;
 }
 
 .circular-progress {
