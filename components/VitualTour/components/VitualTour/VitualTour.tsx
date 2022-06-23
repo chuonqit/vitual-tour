@@ -89,6 +89,7 @@ const VitualTour = (props: Props) => {
   const [sceneId, setSceneId] = React.useState<string>("house");
   const [toggle, setToggle] = React.useState<boolean>(false);
   const [loaded, setLoaded] = React.useState<boolean>(true);
+  const [slidesPerView, setSlidesPerView] = React.useState<number>(10);
   const pannellumRef = React.createRef<HTMLDivElement>();
 
   const menuToggle = () => setToggle(!toggle);
@@ -232,6 +233,31 @@ const VitualTour = (props: Props) => {
     }
   }, [viewer, position, sceneId]);
 
+  const checkScreen = () => {
+    if (window.innerWidth < 1000) {
+      setToggle(true);
+      setSlidesPerView(5);
+    }
+    if (window.innerWidth < 768) {
+      setSlidesPerView(3);
+    }
+    if (window.innerWidth < 568) {
+      setSlidesPerView(2);
+    }
+    if (window.innerWidth > 1200) {
+      setToggle(false);
+      setSlidesPerView(10);
+    }
+  };
+
+  React.useEffect(() => {
+    checkScreen();
+
+    window.addEventListener("resize", checkScreen);
+
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
   return (
     <>
       <Loading loaded={loaded} />
@@ -259,17 +285,12 @@ const VitualTour = (props: Props) => {
             </p>
           </div>
         )}
-        <div
-          ref={pannellumRef}
-          className={styles["vitual-tour-wrapper"]}
-          style={{
-            transform: toggle ? "translateY(0)" : "translateY(-106px)",
-          }}
-        ></div>
+        <div ref={pannellumRef} className={styles["vitual-tour-wrapper"]}></div>
         <VitualTourGallery
           galleries={galleries}
           sceneId={sceneId}
           toggle={toggle}
+          slidesPerView={slidesPerView}
           onToggle={menuToggle}
           loadScene={(scene) => changeScene(scene)}
         />
@@ -277,5 +298,9 @@ const VitualTour = (props: Props) => {
     </>
   );
 };
+
+// style={{
+//   transform: toggle ? "translateY(0)" : "translateY(-106px)",
+// }}
 
 export default VitualTour;

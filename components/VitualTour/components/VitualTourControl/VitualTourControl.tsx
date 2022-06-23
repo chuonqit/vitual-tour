@@ -42,7 +42,10 @@ const InfoModal = ({
           >
             <span>&times;</span>
           </button>
-          <div dangerouslySetInnerHTML={{ __html: content }}></div>
+          <div
+            dangerouslySetInnerHTML={{ __html: content }}
+            style={{ height: 1000 }}
+          ></div>
         </div>
       </div>
       <div className={styles["modal-overlay"]} onClick={onToggle} />

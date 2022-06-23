@@ -19,6 +19,7 @@ type Props = {
   loadScene: (sceneId: string) => void;
   onToggle: () => void;
   toggle: boolean;
+  slidesPerView: number;
 };
 
 const VitualTourGallery = ({
@@ -27,6 +28,7 @@ const VitualTourGallery = ({
   loadScene,
   onToggle,
   toggle,
+  slidesPerView,
 }: Props) => {
   const prevButton = () => {
     if (galleries) {
@@ -74,7 +76,7 @@ const VitualTourGallery = ({
           ></button>
         </div>
         <Swiper
-          slidesPerView={10}
+          slidesPerView={slidesPerView}
           navigation={true}
           modules={[Navigation]}
           className={`${styles["pnlm-gallery-container"]} pnlm-gallery-container`}
