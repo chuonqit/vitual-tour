@@ -8,13 +8,10 @@ import "swiper/css/navigation";
 import styles from "./VitualTourGallery.module.css";
 
 import { Navigation } from "swiper";
+import { GalleryType } from "../../libs/VitualType";
 
 type Props = {
-  galleries?: {
-    label: string;
-    image: string;
-    sceneId: string;
-  }[];
+  galleries?: GalleryType[];
   sceneId: string;
   loadScene: (sceneId: string) => void;
   onToggle: () => void;
@@ -94,7 +91,7 @@ const VitualTourGallery = ({
             >
               <img src={item.image} />
               <div className={styles["pnlm-gallery-item--label"]}>
-                <span>{item.label}</span>
+                <span>Đến {item.label.toLowerCase()}</span>
               </div>
             </SwiperSlide>
           ))}

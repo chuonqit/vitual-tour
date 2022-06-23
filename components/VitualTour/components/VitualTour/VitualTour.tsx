@@ -6,8 +6,15 @@ import Pannellum from "../../libs/Pannellum";
 import Viewer from "../../libs/ViewerType";
 import VitualTourControl from "../VitualTourControl/VitualTourControl";
 import VitualTourGallery from "../VitualTourGallery/VitualTourGallery";
+import VitualType, {
+  GalleryType,
+  VitualSceneType,
+} from "../../libs/VitualType";
 
-type Props = {};
+type Props = {
+  vituals: VitualType;
+  galleries?: GalleryType[];
+};
 
 type TPosition = {
   hfov: number;
@@ -25,25 +32,6 @@ type TInfo = {
     content: string;
   };
 };
-
-const galleries = [
-  {
-    label: "Label 1",
-    image: "https://i.imgur.com/ZBE3gS3.jpg",
-    sceneId: "sky",
-  },
-  {
-    label: "Label 2",
-    image: "https://pannellum.org//images/bma-0.jpg",
-    sceneId: "house",
-  },
-  {
-    label: "Label 1",
-    image:
-      "https://thumbs.dreamstime.com/b/snowy-mountains-panorama-4347925.jpg",
-    sceneId: "snow",
-  },
-];
 
 const Loading = ({ speed }: { speed: number }) => {
   const [percent, setPercent] = React.useState<number>(0);
@@ -91,7 +79,7 @@ const Loading = ({ speed }: { speed: number }) => {
   );
 };
 
-const VitualTour = (props: Props) => {
+const VitualTour = ({ vituals, galleries }: Props) => {
   const [position, setPosition] = React.useState<TPosition>({
     hfov: 0,
     yaw: 0,
@@ -112,148 +100,6 @@ const VitualTour = (props: Props) => {
     setSceneId(sceneId);
   };
 
-  React.useEffect(() => {
-    const loader = setTimeout(() => {
-      setLoaded(false);
-    }, 1500);
-
-    return () => clearTimeout(loader);
-  }, []);
-
-  React.useEffect(() => {
-    const viewer = Pannellum.viewer(pannellumRef.current, {
-      default: {
-        firstScene: "house",
-        sceneFadeDuration: 1000,
-      },
-
-      info: {
-        name: "trường cao đẳng fpt polytechnic",
-        content: "sdkakldajsdlajsdlajsdlkajsdlkasjdlkasd",
-        galleries: [
-          "https://swiperjs.com/demos/images/nature-1.jpg",
-          "https://swiperjs.com/demos/images/nature-2.jpg",
-          "https://swiperjs.com/demos/images/nature-3.jpg",
-          "https://swiperjs.com/demos/images/nature-4.jpg",
-          "https://swiperjs.com/demos/images/nature-5.jpg",
-          "https://swiperjs.com/demos/images/nature-6.jpg",
-          "https://swiperjs.com/demos/images/nature-7.jpg",
-          "https://swiperjs.com/demos/images/nature-8.jpg",
-          "https://swiperjs.com/demos/images/nature-9.jpg",
-          "https://swiperjs.com/demos/images/nature-10.jpg",
-        ],
-      },
-
-      scenes: {
-        house: {
-          room: "Room 1",
-          hfov: 120,
-          pitch: 12.827447381555467,
-          yaw: 116.75064961832777,
-          type: "equirectangular",
-          panorama: "https://pannellum.org//images/bma-0.jpg",
-          annotation: {
-            title: "Title annotation",
-            content: "content annotation...",
-          },
-          hotSpots: [
-            {
-              pitch: -0.6,
-              yaw: 37.1,
-              type: "scene",
-              text: "Mason Circle",
-              sceneId: "sky",
-              args: "sdkjad",
-            },
-            {
-              handler: true,
-              pitch: 8.884999825237239,
-              yaw: 87.38770793184939,
-              type: "info",
-              text: "Mason Circle",
-              draggable: true,
-              args: { name: 1, age: 2 },
-            },
-          ],
-        },
-        sky: {
-          room: "Room 2",
-          hfov: 120,
-          pitch: 12.827447381555467,
-          yaw: 116.75064961832777,
-          type: "equirectangular",
-          panorama: "https://i.imgur.com/ZBE3gS3.jpg",
-          annotation: {
-            title: "Title annotation 2",
-            content: "content annotation 2...",
-          },
-          hotSpots: [
-            {
-              pitch: -0.6,
-              yaw: 37.1,
-              type: "scene",
-              text: "Mason Circle",
-              sceneId: "snow",
-            },
-          ],
-        },
-        snow: {
-          room: "Room 3",
-          hfov: 120,
-          pitch: 12.827447381555467,
-          yaw: 116.75064961832777,
-          type: "equirectangular",
-          panorama:
-            "https://thumbs.dreamstime.com/b/snowy-mountains-panorama-4347925.jpg",
-          hotSpots: [
-            {
-              pitch: -0.6,
-              yaw: 37.1,
-              rotateX: 20,
-              rotateZ: 65,
-              type: "scene",
-              text: "Mason Circle",
-              sceneId: "house",
-            },
-          ],
-        },
-      },
-    });
-
-    viewer.on("load", () => {
-      setSceneId(viewer.getScene());
-      setInfo({
-        name: viewer.getInfo().name,
-        room: viewer.getRoom(),
-        content: viewer.getInfo().content,
-        galleries: viewer.getInfo().galleries,
-        annotation: viewer.getAnnotation() && {
-          title: viewer.getAnnotation().title,
-          content: viewer.getAnnotation().content,
-        },
-      });
-    });
-
-    viewer.on("mouseup", () => {
-      const hfov = viewer.getHfov();
-      const pitch = viewer.getPitch();
-      const yaw = viewer.getYaw();
-      setPosition({ hfov, pitch, yaw });
-    });
-
-    setViewer(viewer);
-
-    return () => viewer.destroy();
-  }, [pannellumRef.current]);
-
-  React.useEffect(() => {
-    if (viewer) {
-      viewer.setClickHandler(({ ...rest }) => {
-        alert("Hotspot: " + rest.type);
-      });
-    }
-  }, [viewer, position, sceneId]);
-
   const checkScreenSlide = () => {
     if (window.innerWidth < 1000) {
       setSlidesPerView(5);
@@ -268,6 +114,64 @@ const VitualTour = (props: Props) => {
       setSlidesPerView(10);
     }
   };
+
+  const sceneData = React.useMemo(() => {
+    return vituals.scenes.reduce((object: any, current: VitualSceneType) => {
+      return {
+        ...object,
+        [current._id]: { ...current },
+      };
+    }, {});
+  }, [vituals]);
+
+  React.useEffect(() => {
+    const loader = setTimeout(() => {
+      setLoaded(false);
+    }, 1500);
+
+    return () => clearTimeout(loader);
+  }, []);
+
+  React.useEffect(() => {
+    const viewer = Pannellum.viewer(pannellumRef.current, {
+      default: vituals.default,
+      info: vituals.info,
+      scenes: sceneData,
+    });
+
+    setViewer(viewer);
+
+    return () => viewer.destroy();
+  }, [pannellumRef.current, vituals]);
+
+  React.useEffect(() => {
+    if (viewer) {
+      viewer.on("load", () => {
+        setSceneId(viewer.getScene());
+        setInfo({
+          name: viewer.getInfo().name,
+          room: viewer.getRoom(),
+          content: viewer.getInfo().content,
+          galleries: viewer.getInfo().galleries,
+          annotation: viewer.getAnnotation() && {
+            title: viewer.getAnnotation().title,
+            content: viewer.getAnnotation().content,
+          },
+        });
+      });
+
+      viewer.on("mouseup", () => {
+        const hfov = viewer.getHfov();
+        const pitch = viewer.getPitch();
+        const yaw = viewer.getYaw();
+        setPosition({ hfov, pitch, yaw });
+      });
+
+      viewer.setClickHandler(({ ...rest }) => {
+        alert("Hotspot: " + JSON.stringify(rest.args));
+      });
+    }
+  }, [viewer, position, sceneId, info]);
 
   React.useEffect(() => {
     checkScreenSlide();

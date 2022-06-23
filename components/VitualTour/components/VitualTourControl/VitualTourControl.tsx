@@ -23,7 +23,7 @@ const InfoModal = ({
   onToggle,
 }: {
   show: boolean;
-  content: string;
+  content?: string;
   onToggle: () => void;
 }) => {
   const modalRef = React.createRef<HTMLDivElement>();
@@ -51,10 +51,7 @@ const InfoModal = ({
           >
             <span>&times;</span>
           </button>
-          <div
-            dangerouslySetInnerHTML={{ __html: content }}
-            style={{ height: 1000 }}
-          ></div>
+          <div dangerouslySetInnerHTML={{ __html: content! }}></div>
         </div>
       </div>
       <div className={styles["modal-overlay"]} onClick={onToggle} />
@@ -94,25 +91,25 @@ const VitualTourControl = ({ viewer, toggle, content, galleries }: Props) => {
       </div>
       <div
         className={styles["controls-bottom"]}
-        style={{ transform: toggle ? "translateY(100px)" : "translateY(0)" }}
+        style={{ transform: toggle ? "translateY(110px)" : "translateY(0)" }}
       >
         {content && (
-          <button
+          <div
             className={styles["controls-bottom-button"]}
             onClick={() => setInfoModal(!infoModal)}
           >
             <FaInfo />
-          </button>
+          </div>
         )}
         {galleries && galleries.length > 0 && (
-          <button className={styles["controls-bottom-button"]}>
+          <div className={styles["controls-bottom-button"]}>
             <FaRegImages />
-          </button>
+          </div>
         )}
       </div>
 
       <InfoModal
-        content={viewer?.getInfo().content}
+        content={content}
         show={infoModal}
         onToggle={() => setInfoModal(!infoModal)}
       />
