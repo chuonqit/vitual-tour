@@ -9,6 +9,12 @@ import VitualTourGallery from "../VitualTourGallery/VitualTourGallery";
 
 type Props = {};
 
+type TPosition = {
+  hfov: number;
+  yaw: number;
+  pitch: number;
+};
+
 const galleries = [
   {
     label: "Label 1",
@@ -163,6 +169,11 @@ const galleries = [
 ];
 
 const VitualTour = (props: Props) => {
+  const [position, setPosition] = React.useState<TPosition>({
+    hfov: 0,
+    yaw: 0,
+    pitch: 0,
+  });
   const [viewer, setViewer] = React.useState<Viewer>();
   const [sceneId, setSceneId] = React.useState<string>("house");
   const [toggle, setToggle] = React.useState<boolean>(false);
@@ -220,14 +231,16 @@ const VitualTour = (props: Props) => {
               type: "scene",
               text: "Mason Circle",
               sceneId: "sky",
-              draggable: true,
+              args: "sdkjad",
             },
             {
-              pitch: -0.6,
-              yaw: 37.1,
+              handler: true,
+              pitch: 8.884999825237239,
+              yaw: 87.38770793184939,
               type: "info",
               text: "Mason Circle",
               draggable: true,
+              args: { name: 1, age: 2 },
             },
           ],
         },
@@ -249,7 +262,6 @@ const VitualTour = (props: Props) => {
               type: "scene",
               text: "Mason Circle",
               sceneId: "snow",
-              draggable: true,
             },
           ],
         },
@@ -270,20 +282,35 @@ const VitualTour = (props: Props) => {
               type: "scene",
               text: "Mason Circle",
               sceneId: "house",
-              draggable: true,
             },
           ],
         },
       },
     });
-    setViewer(viewer);
 
-    viewer.on("load", () => {
-      setSceneId(viewer.getScene());
-    });
+    setViewer(viewer);
 
     return () => viewer.destroy();
   }, [pannellumRef.current]);
+
+  React.useEffect(() => {
+    if (viewer) {
+      viewer.on("load", () => {
+        setSceneId(viewer.getScene());
+      });
+
+      viewer.on("mouseup", () => {
+        const hfov = viewer.getHfov();
+        const pitch = viewer.getPitch();
+        const yaw = viewer.getYaw();
+        setPosition({ hfov, pitch, yaw });
+      });
+
+      viewer.setClickHandler(({ ...rest }) => {
+        alert("Hotspot: " + rest.type);
+      });
+    }
+  }, [viewer, position, sceneId]);
 
   return (
     <div className={styles["vitual-tour"]}>

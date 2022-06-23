@@ -210,6 +210,10 @@
   animation: spin 2s linear infinite;
 }
 
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -563,4 +567,9 @@ div.pnlm-tooltip:hover span:after {
   color: #ff5b00;
   font-size: 18px;
   font-weight: bold;
+}
+
+.pnlm-gallery-main-button .swiper-button-prev::after,
+.pnlm-gallery-main-button .swiper-button-next::after {
+  color: #ff5b00;
 }

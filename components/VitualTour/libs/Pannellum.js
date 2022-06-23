@@ -2180,6 +2180,26 @@ const Pannellum = (function (window, document, undefined) {
       var span = document.createElement("span");
       if (hs.text) span.innerHTML = escapeHTML(hs.text);
 
+      if (hs.handler == true) {
+        div.classList.add("cursor-pointer");
+        div.addEventListener(
+          "click",
+          function (e) {
+            if (typeof config.clickHandler == "function") {
+              config.clickHandler({
+                type: hs.type,
+                args: hs.args,
+                yaw: hs.yaw,
+                pitch: hs.pitch,
+              });
+            }
+          },
+          "false"
+        );
+      } else {
+        div.classList.remove("cursor-pointer");
+      }
+
       var a;
       if (hs.video) {
         var video = document.createElement("video"),
@@ -3092,6 +3112,10 @@ const Pannellum = (function (window, document, undefined) {
 
     this.getInfo = function () {
       return config.info;
+    };
+
+    this.setClickHandler = (callback) => {
+      config.clickHandler = callback;
     };
 
     this.getRoom = function () {

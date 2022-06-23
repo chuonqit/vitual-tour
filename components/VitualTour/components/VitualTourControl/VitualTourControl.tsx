@@ -75,12 +75,12 @@ const VitualTourControl = ({ viewer, toggle }: Props) => {
             className={styles["controls-bottom-button"]}
             onClick={() => setInfoModal(!infoModal)}
           >
-            <FaInfo size={18} />
+            <FaInfo />
           </button>
         )}
         {viewer?.getInfo().galleries && viewer?.getInfo().galleries.length > 0 && (
           <button className={styles["controls-bottom-button"]}>
-            <FaRegImages size={18} />
+            <FaRegImages />
           </button>
         )}
       </div>
