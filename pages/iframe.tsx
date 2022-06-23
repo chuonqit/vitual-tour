@@ -8,7 +8,7 @@ const Iframe = (props: Props) => {
       <iframe
         width={700}
         height={400}
-        src="http://localhost:3000/"
+        src="https://vitual-tour.vercel.app/"
         frameBorder="0"
       ></iframe>
     </div>
