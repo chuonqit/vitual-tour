@@ -15,6 +15,17 @@ type TPosition = {
   pitch: number;
 };
 
+type TInfo = {
+  name: string;
+  room: string;
+  content: string;
+  galleries: string[];
+  annotation: {
+    title: string;
+    content: string;
+  };
+};
+
 const galleries = [
   {
     label: "Label 1",
@@ -86,6 +97,7 @@ const VitualTour = (props: Props) => {
     yaw: 0,
     pitch: 0,
   });
+  const [info, setInfo] = React.useState<TInfo>();
   const [viewer, setViewer] = React.useState<Viewer>();
   const [sceneId, setSceneId] = React.useState<string>("house");
   const [toggle, setToggle] = React.useState<boolean>(false);
@@ -113,8 +125,6 @@ const VitualTour = (props: Props) => {
       default: {
         firstScene: "house",
         sceneFadeDuration: 1000,
-        autoLoad: true,
-        showControls: false,
       },
 
       info: {
@@ -210,6 +220,27 @@ const VitualTour = (props: Props) => {
       },
     });
 
+    viewer.on("load", () => {
+      setSceneId(viewer.getScene());
+      setInfo({
+        name: viewer.getInfo().name,
+        room: viewer.getRoom(),
+        content: viewer.getInfo().content,
+        galleries: viewer.getInfo().galleries,
+        annotation: viewer.getAnnotation() && {
+          title: viewer.getAnnotation().title,
+          content: viewer.getAnnotation().content,
+        },
+      });
+    });
+
+    viewer.on("mouseup", () => {
+      const hfov = viewer.getHfov();
+      const pitch = viewer.getPitch();
+      const yaw = viewer.getYaw();
+      setPosition({ hfov, pitch, yaw });
+    });
+
     setViewer(viewer);
 
     return () => viewer.destroy();
@@ -217,17 +248,6 @@ const VitualTour = (props: Props) => {
 
   React.useEffect(() => {
     if (viewer) {
-      viewer.on("load", () => {
-        setSceneId(viewer.getScene());
-      });
-
-      viewer.on("mouseup", () => {
-        const hfov = viewer.getHfov();
-        const pitch = viewer.getPitch();
-        const yaw = viewer.getYaw();
-        setPosition({ hfov, pitch, yaw });
-      });
-
       viewer.setClickHandler(({ ...rest }) => {
         alert("Hotspot: " + rest.type);
       });
@@ -268,21 +288,21 @@ const VitualTour = (props: Props) => {
       >
         <VitualTourControl viewer={viewer} toggle={toggle} />
         <div className={styles["vitual-header"]}>
-          <div className={styles["vitual-header-name"]}>
-            {viewer?.getInfo().name}
-          </div>
-          <div className={styles["vitual-header-room"]}>
-            {viewer?.getRoom()}
-          </div>
+          {info?.name && (
+            <div className={styles["vitual-header-name"]}>{info.name}</div>
+          )}
+          {info?.room && (
+            <div className={styles["vitual-header-room"]}>{info.room}</div>
+          )}
         </div>
-        {viewer?.getAnnotation() && (
+        {info?.annotation && (
           <div className={styles["vitual-annotation"]}>
             <h2 className={styles["vitual-annotation-title"]}>
-              {viewer?.getAnnotation().title}
+              {info.annotation.title}
             </h2>
             <hr />
             <p className={styles["vitual-annotation-content"]}>
-              {viewer?.getAnnotation().content}
+              {info.annotation.content}
             </p>
           </div>
         )}
