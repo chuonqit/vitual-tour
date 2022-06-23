@@ -34,6 +34,51 @@ const galleries = [
   },
 ];
 
+const Loading = ({ loaded }: { loaded: boolean }) => {
+  const [percent, setPercent] = React.useState<number>(0);
+  const [styleProgressBar, setStyleProgressBar] = React.useState<string>("");
+
+  React.useEffect(() => {
+    let progressValue = 0;
+    let progressEndValue = 100;
+    let speed = 10;
+
+    let progress = setInterval(() => {
+      progressValue++;
+
+      setPercent(progressValue);
+
+      setStyleProgressBar(`conic-gradient(
+        #ff5b00 ${progressValue * 3.6}deg,
+        #ffc4a4 ${progressValue * 3.6}deg
+      )`);
+
+      if (progressValue == progressEndValue) {
+        clearInterval(progress);
+      }
+    }, speed);
+
+    return () => clearInterval(progress);
+  }, []);
+
+  return loaded ? (
+    <div
+      className={styles["loading-box"]}
+      style={{
+        backgroundImage:
+          "url('https://caodang.fpt.edu.vn/wp-content/uploads/Poly-1-scaled.jpg')",
+      }}
+    >
+      <div
+        className={styles["circular-progress"]}
+        style={{ background: styleProgressBar }}
+      >
+        <div className={styles["value-container"]}>{percent}%</div>
+      </div>
+    </div>
+  ) : null;
+};
+
 const VitualTour = (props: Props) => {
   const [position, setPosition] = React.useState<TPosition>({
     hfov: 0,
@@ -43,6 +88,7 @@ const VitualTour = (props: Props) => {
   const [viewer, setViewer] = React.useState<Viewer>();
   const [sceneId, setSceneId] = React.useState<string>("house");
   const [toggle, setToggle] = React.useState<boolean>(false);
+  const [loaded, setLoaded] = React.useState<boolean>(true);
   const pannellumRef = React.createRef<HTMLDivElement>();
 
   const menuToggle = () => setToggle(!toggle);
@@ -51,6 +97,14 @@ const VitualTour = (props: Props) => {
     viewer?.loadScene(sceneId);
     setSceneId(sceneId);
   };
+
+  React.useEffect(() => {
+    const loader = setTimeout(() => {
+      setLoaded(false);
+    }, 1500);
+
+    return () => clearTimeout(loader);
+  }, []);
 
   React.useEffect(() => {
     const viewer = Pannellum.viewer(pannellumRef.current, {
@@ -179,40 +233,48 @@ const VitualTour = (props: Props) => {
   }, [viewer, position, sceneId]);
 
   return (
-    <div className={styles["vitual-tour"]}>
-      <VitualTourControl viewer={viewer} toggle={toggle} />
-      <div className={styles["vitual-header"]}>
-        <div className={styles["vitual-header-name"]}>
-          {viewer?.getInfo().name}
-        </div>
-        <div className={styles["vitual-header-room"]}>{viewer?.getRoom()}</div>
-      </div>
-      {viewer?.getAnnotation() && (
-        <div className={styles["vitual-annotation"]}>
-          <h2 className={styles["vitual-annotation-title"]}>
-            {viewer?.getAnnotation().title}
-          </h2>
-          <hr />
-          <p className={styles["vitual-annotation-content"]}>
-            {viewer?.getAnnotation().content}
-          </p>
-        </div>
-      )}
+    <>
+      <Loading loaded={loaded} />
       <div
-        ref={pannellumRef}
-        className={styles["vitual-tour-wrapper"]}
-        style={{
-          transform: toggle ? "translateY(0)" : "translateY(-106px)",
-        }}
-      ></div>
-      <VitualTourGallery
-        galleries={galleries}
-        sceneId={sceneId}
-        toggle={toggle}
-        onToggle={menuToggle}
-        loadScene={(scene) => changeScene(scene)}
-      />
-    </div>
+        className={styles["vitual-tour"]}
+        style={{ opacity: loaded ? 0 : 1 }}
+      >
+        <VitualTourControl viewer={viewer} toggle={toggle} />
+        <div className={styles["vitual-header"]}>
+          <div className={styles["vitual-header-name"]}>
+            {viewer?.getInfo().name}
+          </div>
+          <div className={styles["vitual-header-room"]}>
+            {viewer?.getRoom()}
+          </div>
+        </div>
+        {viewer?.getAnnotation() && (
+          <div className={styles["vitual-annotation"]}>
+            <h2 className={styles["vitual-annotation-title"]}>
+              {viewer?.getAnnotation().title}
+            </h2>
+            <hr />
+            <p className={styles["vitual-annotation-content"]}>
+              {viewer?.getAnnotation().content}
+            </p>
+          </div>
+        )}
+        <div
+          ref={pannellumRef}
+          className={styles["vitual-tour-wrapper"]}
+          style={{
+            transform: toggle ? "translateY(0)" : "translateY(-106px)",
+          }}
+        ></div>
+        <VitualTourGallery
+          galleries={galleries}
+          sceneId={sceneId}
+          toggle={toggle}
+          onToggle={menuToggle}
+          loadScene={(scene) => changeScene(scene)}
+        />
+      </div>
+    </>
   );
 };
 
