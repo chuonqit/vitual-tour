@@ -43,7 +43,7 @@ const objects: VitualType = {
           yaw: 37.1,
           type: "location",
           text: "Nội dung tooltip",
-          rotateX: 61,
+          rotateX: 50,
           rotateZ: 355,
           sceneId: "sky",
         },

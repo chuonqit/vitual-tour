@@ -601,14 +601,40 @@ div.pnlm-tooltip:hover span:after {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: makerAnim 650ms infinite ease-in-out;
+  animation: makerAnim 450ms infinite ease-in-out;
 }
 
-@keyframes makerAnim {
-  100% {
-    margin-top: -7px;
-    margin-left: -7px;
-    padding: 7px;
-    font-size: 35px;
+@media (max-width: 768px) {
+  .custom-maker .pnlm-hotspot-maker {
+    min-width: 30px;
+    min-height: 30px;
+    font-size: 17px;
+  }
+
+  @keyframes makerAnim {
+    100% {
+      margin-top: -5px;
+      margin-left: -5px;
+      padding: 5px;
+      font-size: 22px;
+    }
+  }
+
+  div.pnlm-tooltip:hover span {
+    visibility: visible;
+  }
+  div.pnlm-tooltip:hover span:after {
+    left: -20px;
+  }
+}
+
+@media (min-width: 768px) {
+  @keyframes makerAnim {
+    100% {
+      margin-top: -5px;
+      margin-left: -5px;
+      padding: 5px;
+      font-size: 32px;
+    }
   }
 }
