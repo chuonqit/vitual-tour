@@ -588,8 +588,8 @@ div.pnlm-tooltip:hover span:after {
 }
 
 .custom-maker .pnlm-hotspot-maker {
-  width: 50px;
-  height: 50px;
+  min-width: 50px;
+  min-height: 50px;
   background-color: #ff5b00;
   color: #ffffff;
   font-size: 27px;
@@ -601,14 +601,14 @@ div.pnlm-tooltip:hover span:after {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: makerAnim 350ms infinite ease-in-out;
+  animation: makerAnim 650ms infinite ease-in-out;
 }
 
 @keyframes makerAnim {
-  0% {
-    transform: scale(1);
-  }
   100% {
-    transform: scale(1.1);
+    margin-top: -7px;
+    margin-left: -7px;
+    padding: 7px;
+    font-size: 35px;
   }
 }
