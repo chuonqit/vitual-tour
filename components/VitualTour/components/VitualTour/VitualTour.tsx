@@ -10,6 +10,7 @@ import VitualType, {
   GalleryType,
   VitualSceneType,
 } from "../../libs/VitualType";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 type Props = {
   vituals: VitualType;
@@ -89,6 +90,7 @@ const VitualTour = ({ vituals, galleries }: Props) => {
   const [viewer, setViewer] = React.useState<Viewer>();
   const [sceneId, setSceneId] = React.useState<string>("house");
   const [toggle, setToggle] = React.useState<boolean>(false);
+  const [annotaionToggle, setAnnotaionToggle] = React.useState<boolean>(false);
   const [loaded, setLoaded] = React.useState<boolean>(true);
   const [slidesPerView, setSlidesPerView] = React.useState<number>(10);
   const pannellumRef = React.createRef<HTMLDivElement>();
@@ -188,12 +190,7 @@ const VitualTour = ({ vituals, galleries }: Props) => {
         className={styles["vitual-tour"]}
         style={{ opacity: loaded ? 0 : 1 }}
       >
-        <VitualTourControl
-          viewer={viewer}
-          toggle={toggle}
-          content={info?.content}
-          galleries={info?.galleries}
-        />
+        <VitualTourControl viewer={viewer} toggle={toggle} />
         <div className={styles["vitual-header"]}>
           {info?.name && (
             <div className={styles["vitual-header-name"]}>{info.name}</div>
@@ -202,17 +199,32 @@ const VitualTour = ({ vituals, galleries }: Props) => {
             <div className={styles["vitual-header-room"]}>{info.room}</div>
           )}
         </div>
-        {info?.annotation && (
-          <div className={styles["vitual-annotation"]}>
-            <h2 className={styles["vitual-annotation-title"]}>
-              {info.annotation.title}
-            </h2>
-            <hr />
-            <p className={styles["vitual-annotation-content"]}>
-              {info.annotation.content}
-            </p>
-          </div>
-        )}
+        <div
+          className={styles["annotation"]}
+          style={{
+            transform: annotaionToggle ? "translateX(-286px)" : "translateX(0)",
+          }}
+        >
+          {info?.annotation && (
+            <>
+              <div className={styles["vitual-annotation"]}>
+                <h2 className={styles["vitual-annotation-title"]}>
+                  {info.annotation.title}
+                </h2>
+                <hr />
+                <p className={styles["vitual-annotation-content"]}>
+                  {info.annotation.content}
+                </p>
+              </div>
+              <div
+                className={styles["annotation-button"]}
+                onClick={() => setAnnotaionToggle(!annotaionToggle)}
+              >
+                {annotaionToggle ? <FaChevronRight /> : <FaChevronLeft />}
+              </div>
+            </>
+          )}
+        </div>
         <div ref={pannellumRef} className={styles["vitual-tour-wrapper"]}></div>
         <VitualTourGallery
           galleries={galleries}
@@ -221,6 +233,8 @@ const VitualTour = ({ vituals, galleries }: Props) => {
           slidesPerView={slidesPerView}
           onToggle={menuToggle}
           loadScene={(scene) => changeScene(scene)}
+          content={info?.content}
+          infoGalleries={info?.galleries}
         />
       </div>
     </>

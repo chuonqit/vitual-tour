@@ -4,10 +4,10 @@ import styles from "./VitualTourControl.module.css";
 import {
   FaExpand,
   FaCompress,
-  FaInfo,
-  FaRegImages,
   FaSearchPlus,
   FaSearchMinus,
+  FaVolumeUp,
+  FaVolumeMute,
 } from "react-icons/fa";
 
 type Props = {
@@ -17,51 +17,10 @@ type Props = {
   galleries?: string[];
 };
 
-const InfoModal = ({
-  show,
-  content,
-  onToggle,
-}: {
-  show: boolean;
-  content?: string;
-  onToggle: () => void;
-}) => {
-  const modalRef = React.createRef<HTMLDivElement>();
-
-  const WindowCheck = (event: MouseEvent) => {
-    if (event.target == modalRef.current) {
-      onToggle();
-    }
-  };
-
-  React.useEffect(() => {
-    window.addEventListener("click", WindowCheck);
-
-    return () => window.removeEventListener("click", WindowCheck);
-  }, [show]);
-
-  return show ? (
-    <>
-      <div className={styles["modal-info"]} ref={modalRef}>
-        <div className={styles["modal-wrapper"]}>
-          <button
-            type="button"
-            className={styles["modal-header-button"]}
-            onClick={onToggle}
-          >
-            <span>&times;</span>
-          </button>
-          <div dangerouslySetInnerHTML={{ __html: content! }}></div>
-        </div>
-      </div>
-      <div className={styles["modal-overlay"]} onClick={onToggle} />
-    </>
-  ) : null;
-};
-
 const VitualTourControl = ({ viewer, toggle, content, galleries }: Props) => {
-  const [infoModal, setInfoModal] = React.useState<boolean>(false);
   const [fullscreen, setFullscreen] = React.useState<boolean>(false);
+  const [toggleVolume, setToggleVolume] = React.useState<boolean>(true);
+  const audioRef = React.createRef<HTMLAudioElement>();
 
   const onFullScreen = () => {
     setFullscreen(!fullscreen);
@@ -76,43 +35,72 @@ const VitualTourControl = ({ viewer, toggle, content, galleries }: Props) => {
     viewer?.setHfov(viewer.getHfov() + 10);
   };
 
+  const playAudio = () => {
+    audioRef.current?.play();
+    setToggleVolume(false);
+  };
+
+  const stopAudio = () => {
+    audioRef.current?.pause();
+    setToggleVolume(true);
+  };
+
   return (
     <>
-      <div className={styles.controls}>
-        <div className={styles.ctrl} id="zoom-in" onClick={onZoomIn}>
-          <FaSearchPlus />
-        </div>
-        <div className={styles.ctrl} id="zoom-out" onClick={onZoomOut}>
-          <FaSearchMinus />
-        </div>
-        <div className={styles.ctrl} id="fullscreen" onClick={onFullScreen}>
-          {fullscreen ? <FaCompress /> : <FaExpand />}
-        </div>
-      </div>
-      <div
-        className={styles["controls-bottom"]}
-        style={{ transform: toggle ? "translateY(110px)" : "translateY(0)" }}
-      >
-        {content && (
-          <div
-            className={styles["controls-bottom-button"]}
-            onClick={() => setInfoModal(!infoModal)}
-          >
-            <FaInfo />
-          </div>
-        )}
-        {galleries && galleries.length > 0 && (
-          <div className={styles["controls-bottom-button"]}>
-            <FaRegImages />
-          </div>
-        )}
-      </div>
-
-      <InfoModal
-        content={content}
-        show={infoModal}
-        onToggle={() => setInfoModal(!infoModal)}
+      <audio
+        controls
+        ref={audioRef}
+        autoPlay
+        style={{ display: "none" }}
+        src={viewer?.getAudioSrc()}
       />
+      <div className={styles.controlsWrapper}>
+        <div className={styles.controls}>
+          {!toggleVolume ? (
+            <div
+              className={styles.ctrl}
+              onClick={stopAudio}
+              title="Tắt âm thanh"
+            >
+              <FaVolumeUp />
+            </div>
+          ) : (
+            <div
+              className={styles.ctrl}
+              onClick={playAudio}
+              title="Bật âm thanh"
+            >
+              <FaVolumeMute />
+            </div>
+          )}
+        </div>
+        <div className={styles.controls}>
+          <div
+            className={styles.ctrl}
+            id="zoom-in"
+            onClick={onZoomIn}
+            title="Phóng to"
+          >
+            <FaSearchPlus />
+          </div>
+          <div
+            className={styles.ctrl}
+            id="zoom-out"
+            onClick={onZoomOut}
+            title="Thu nhỏ"
+          >
+            <FaSearchMinus />
+          </div>
+          <div
+            className={`${styles.ctrl} ${styles["order-1"]}`}
+            id="fullscreen"
+            onClick={onFullScreen}
+            title="Toàn màn hình"
+          >
+            {fullscreen ? <FaCompress /> : <FaExpand />}
+          </div>
+        </div>
+      </div>
     </>
   );
 };

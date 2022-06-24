@@ -6,6 +6,7 @@ const objects: VitualType = {
   default: {
     firstScene: "sky",
     sceneFadeDuration: 1200,
+    audioSrc: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
   },
   info: {
     name: "trường cao đẳng fpt polytechnic",

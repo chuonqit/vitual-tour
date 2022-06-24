@@ -276,6 +276,11 @@ const Pannellum = (function (window, document, undefined) {
     });
     uiContainer.appendChild(controls.load);
 
+    // audio
+    if (typeof audioSrc == "string") {
+      config.audioSrc = audioSrc;
+    }
+
     // Zoom controls
     controls.zoom = document.createElement("div");
     controls.zoom.className = "pnlm-zoom-controls pnlm-controls";
@@ -3112,6 +3117,10 @@ const Pannellum = (function (window, document, undefined) {
 
     this.getInfo = function () {
       return config.info;
+    };
+
+    this.getAudioSrc = function () {
+      return config.audioSrc;
     };
 
     this.setClickHandler = (callback) => {

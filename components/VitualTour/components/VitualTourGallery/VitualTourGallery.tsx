@@ -9,6 +9,7 @@ import styles from "./VitualTourGallery.module.css";
 
 import { Navigation } from "swiper";
 import { GalleryType } from "../../libs/VitualType";
+import { FaInfo, FaRegImages } from "react-icons/fa";
 
 type Props = {
   galleries?: GalleryType[];
@@ -17,6 +18,50 @@ type Props = {
   onToggle: () => void;
   toggle: boolean;
   slidesPerView: number;
+  content?: string;
+  infoGalleries?: string[];
+};
+
+const InfoModal = ({
+  show,
+  content,
+  onToggle,
+}: {
+  show: boolean;
+  content?: string;
+  onToggle: () => void;
+}) => {
+  const modalRef = React.createRef<HTMLDivElement>();
+
+  const WindowCheck = (event: MouseEvent) => {
+    if (event.target == modalRef.current) {
+      onToggle();
+    }
+  };
+
+  React.useEffect(() => {
+    window.addEventListener("click", WindowCheck);
+
+    return () => window.removeEventListener("click", WindowCheck);
+  }, [show]);
+
+  return show ? (
+    <>
+      <div className={styles["modal-info"]} ref={modalRef}>
+        <div className={styles["modal-wrapper"]}>
+          <button
+            type="button"
+            className={styles["modal-header-button"]}
+            onClick={onToggle}
+          >
+            <span>&times;</span>
+          </button>
+          <div dangerouslySetInnerHTML={{ __html: content! }}></div>
+        </div>
+      </div>
+      <div className={styles["modal-overlay"]} onClick={onToggle} />
+    </>
+  ) : null;
 };
 
 const VitualTourGallery = ({
@@ -26,7 +71,11 @@ const VitualTourGallery = ({
   onToggle,
   toggle,
   slidesPerView,
+  content,
+  infoGalleries,
 }: Props) => {
+  const [infoModal, setInfoModal] = React.useState<boolean>(false);
+
   const prevButton = () => {
     if (galleries) {
       let index = galleries.findIndex((item) => item.sceneId === sceneId);
@@ -53,50 +102,90 @@ const VitualTourGallery = ({
 
   return (
     <>
-      <div className={`pnlm-gallery-main-button`}>
-        <div className="swiper-button-prev" onClick={prevButton}></div>
-        <div className="swiper-button-next" onClick={nextButton}></div>
-      </div>
       <div
+        className={styles["controls-bottom"]}
         style={{
-          transform: toggle ? "translateY(106px)" : "translateY(0)",
+          transform:
+            toggle || (galleries && galleries.length == 0)
+              ? "translateY(110px)"
+              : "translateY(0)",
         }}
-        className={styles["pnlm-gallery"]}
       >
-        <div className={styles["pnlm-gallery-control"]} onClick={onToggle}>
-          <button
-            className={
-              styles[
-                toggle ? "pnlm-gallery-control-up" : "pnlm-gallery-control-down"
-              ]
-            }
-          ></button>
-        </div>
-        <Swiper
-          slidesPerView={slidesPerView}
-          navigation={true}
-          modules={[Navigation]}
-          className={`${styles["pnlm-gallery-container"]} pnlm-gallery-container`}
-        >
-          {galleries?.map((item, idx) => (
-            <SwiperSlide
-              className={`${styles["pnlm-gallery-item"]} ${
-                item.sceneId === sceneId
-                  ? styles["pnlm-gallery-item-active"]
-                  : ""
-              }`}
-              key={idx}
-              virtualIndex={idx}
-              onClick={() => loadScene(item.sceneId)}
-            >
-              <img src={item.image} />
-              <div className={styles["pnlm-gallery-item--label"]}>
-                <span>Đến {item.label.toLowerCase()}</span>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        {content && (
+          <div
+            className={styles["controls-bottom-button"]}
+            onClick={() => setInfoModal(!infoModal)}
+            title="Thông tin"
+          >
+            <FaInfo />
+          </div>
+        )}
+        {infoGalleries && infoGalleries.length > 0 && (
+          <div
+            className={styles["controls-bottom-button"]}
+            title="Thư viên hình ảnh"
+          >
+            <FaRegImages />
+          </div>
+        )}
       </div>
+
+      <InfoModal
+        content={content}
+        show={infoModal}
+        onToggle={() => setInfoModal(!infoModal)}
+      />
+
+      {galleries && galleries.length > 0 && (
+        <>
+          <div className={`pnlm-gallery-main-button`}>
+            <div className="swiper-button-prev" onClick={prevButton}></div>
+            <div className="swiper-button-next" onClick={nextButton}></div>
+          </div>
+          <div
+            style={{
+              transform: toggle ? "translateY(106px)" : "translateY(0)",
+            }}
+            className={styles["pnlm-gallery"]}
+          >
+            <div className={styles["pnlm-gallery-control"]} onClick={onToggle}>
+              <button
+                className={
+                  styles[
+                    toggle
+                      ? "pnlm-gallery-control-up"
+                      : "pnlm-gallery-control-down"
+                  ]
+                }
+              ></button>
+            </div>
+            <Swiper
+              slidesPerView={slidesPerView}
+              navigation={true}
+              modules={[Navigation]}
+              className={`${styles["pnlm-gallery-container"]} pnlm-gallery-container`}
+            >
+              {galleries.map((item, idx) => (
+                <SwiperSlide
+                  className={`${styles["pnlm-gallery-item"]} ${
+                    item.sceneId === sceneId
+                      ? styles["pnlm-gallery-item-active"]
+                      : ""
+                  }`}
+                  key={idx}
+                  virtualIndex={idx}
+                  onClick={() => loadScene(item.sceneId)}
+                >
+                  <img src={item.image} />
+                  <div className={styles["pnlm-gallery-item--label"]}>
+                    <span>Đến {item.label.toLowerCase()}</span>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </>
+      )}
     </>
   );
 };
