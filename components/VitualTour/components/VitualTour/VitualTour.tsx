@@ -104,15 +104,13 @@ const VitualTour = ({ vituals, galleries }: Props) => {
 
   const checkScreenSlide = () => {
     if (window.innerWidth < 1000) {
+      setAnnotaionToggle(true);
       setSlidesPerView(5);
-    }
-    if (window.innerWidth < 768) {
+    } else if (window.innerWidth < 768) {
+      setAnnotaionToggle(true);
       setSlidesPerView(3);
-    }
-    if (window.innerWidth < 568) {
-      setSlidesPerView(2);
-    }
-    if (window.innerWidth > 1200) {
+    } else {
+      setAnnotaionToggle(false);
       setSlidesPerView(10);
     }
   };

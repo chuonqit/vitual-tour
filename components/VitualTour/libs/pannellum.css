@@ -601,7 +601,8 @@ div.pnlm-tooltip:hover span:after {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: makerAnim 450ms infinite ease-in-out;
+  transform: var(--transform) scale(1);
+  animation: makerAnim 450ms infinite;
 }
 
 @media (max-width: 768px) {
@@ -610,31 +611,10 @@ div.pnlm-tooltip:hover span:after {
     min-height: 30px;
     font-size: 17px;
   }
-
-  @keyframes makerAnim {
-    100% {
-      margin-top: -5px;
-      margin-left: -5px;
-      padding: 5px;
-      font-size: 22px;
-    }
-  }
-
-  div.pnlm-tooltip:hover span {
-    visibility: visible;
-  }
-  div.pnlm-tooltip:hover span:after {
-    left: -20px;
-  }
 }
 
-@media (min-width: 768px) {
-  @keyframes makerAnim {
-    100% {
-      margin-top: -5px;
-      margin-left: -5px;
-      padding: 5px;
-      font-size: 32px;
-    }
+@keyframes makerAnim {
+  100% {
+    transform: var(--transform) scale(1.2);
   }
 }
