@@ -2174,10 +2174,32 @@ const Pannellum = (function (window, document, undefined) {
       // Make sure hot spot pitch and yaw are numbers
       hs.pitch = Number(hs.pitch) || 0;
       hs.yaw = Number(hs.yaw) || 0;
+      hs.rotateX = Number(hs.rotateX) || 0;
+      hs.rotateZ = Number(hs.rotateZ) || 0;
 
       var div = document.createElement("div");
       div.className = "pnlm-hotspot-base";
+
+      var hotspotMaker = document.createElement("div");
+      hotspotMaker.className = "pnlm-hotspot-maker";
+      if (hs.type == "location") {
+        hotspotMaker.innerHTML = `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 320 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M177 255.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 351.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 425.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1zm-34-192L7 199.7c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l96.4-96.4 96.4 96.4c9.4 9.4 24.6 9.4 33.9 0l22.6-22.6c9.4-9.4 9.4-24.6 0-33.9l-136-136c-9.2-9.4-24.4-9.4-33.8 0z"></path></svg>`;
+      }
+      if (hs.type == "info") {
+        hotspotMaker.innerHTML = `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 192 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M20 424.229h20V279.771H20c-11.046 0-20-8.954-20-20V212c0-11.046 8.954-20 20-20h112c11.046 0 20 8.954 20 20v212.229h20c11.046 0 20 8.954 20 20V492c0 11.046-8.954 20-20 20H20c-11.046 0-20-8.954-20-20v-47.771c0-11.046 8.954-20 20-20zM96 0C56.235 0 24 32.235 24 72s32.235 72 72 72 72-32.235 72-72S135.764 0 96 0z"></path></svg>`;
+      }
+      if (hs.type == "phone") {
+        hotspotMaker.innerHTML = `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M497.39 361.8l-112-48a24 24 0 0 0-28 6.9l-49.6 60.6A370.66 370.66 0 0 1 130.6 204.11l60.6-49.6a23.94 23.94 0 0 0 6.9-28l-48-112A24.16 24.16 0 0 0 122.6.61l-104 24A24 24 0 0 0 0 48c0 256.5 207.9 464 464 464a24 24 0 0 0 23.4-18.6l24-104a24.29 24.29 0 0 0-14.01-27.6z"></path></svg>`;
+      }
+      if (hs.rotateX || hs.rotateZ) {
+        hotspotMaker.style.transform = `rotateX(${
+          hs.rotateX + "deg"
+        }) rotateZ(${hs.rotateZ + "deg"})`;
+      }
+      div.appendChild(hotspotMaker);
+
       if (hs.cssClass) div.className += " " + hs.cssClass;
+      else if (config.cssMaker) div.className += " " + config.cssMaker;
       else
         div.className +=
           " pnlm-hotspot pnlm-sprite pnlm-" + escapeHTML(hs.type);
@@ -2275,8 +2297,13 @@ const Pannellum = (function (window, document, undefined) {
         div.classList.add("pnlm-tooltip");
         div.appendChild(span);
         span.style.width = span.scrollWidth - 20 + "px";
-        span.style.marginLeft =
-          -(span.scrollWidth - div.offsetWidth) / 2 + "px";
+        if (config.cssMaker == "custom-maker") {
+          span.style.marginLeft =
+            -(span.scrollWidth - hotspotMaker.offsetWidth) / 2 + "px";
+        } else {
+          span.style.marginLeft =
+            -(span.scrollWidth - div.offsetWidth) / 2 + "px";
+        }
         span.style.marginTop = -span.scrollHeight - 12 + "px";
       }
       if (hs.clickHandlerFunc) {

@@ -4,8 +4,8 @@ import VitualType from "../components/VitualTour/libs/VitualType";
 
 const objects: VitualType = {
   default: {
-    firstScene: "sky",
-    sceneFadeDuration: 1200,
+    firstScene: "house",
+    sceneFadeDuration: 2000,
     audioSrc: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
   },
   info: {
@@ -29,8 +29,8 @@ const objects: VitualType = {
       _id: "house",
       room: "Ngôi nhà",
       hfov: 120,
-      pitch: 12.827447381555467,
-      yaw: 116.75064961832777,
+      pitch: -2.7892480662621235,
+      yaw: 70.19124249177185,
       type: "equirectangular",
       panorama: "https://pannellum.org//images/bma-0.jpg",
       annotation: {
@@ -41,8 +41,10 @@ const objects: VitualType = {
         {
           pitch: -0.6,
           yaw: 37.1,
-          type: "scene",
-          text: "Mason Circle",
+          type: "location",
+          text: "Nội dung tooltip",
+          rotateX: 61,
+          rotateZ: 355,
           sceneId: "sky",
         },
         {
@@ -50,9 +52,16 @@ const objects: VitualType = {
           pitch: 8.884999825237239,
           yaw: 87.38770793184939,
           type: "info",
-          text: "Mason Circle",
-          draggable: true,
+          text: "Nội dung tooltip",
           args: { name: 1, age: 2 },
+        },
+        {
+          handler: true,
+          pitch: 8.884999825237239,
+          yaw: 57.38770793184939,
+          type: "phone",
+          text: "Nội dung tooltip",
+          args: { phone: "0982934000" },
         },
       ],
     },
@@ -72,8 +81,8 @@ const objects: VitualType = {
         {
           pitch: -0.6,
           yaw: 37.1,
-          type: "scene",
-          text: "Mason Circle",
+          type: "location",
+          text: "Nội dung tooltip",
           sceneId: "snow",
         },
         {
@@ -81,7 +90,7 @@ const objects: VitualType = {
           pitch: 8.884999825237239,
           yaw: 87.38770793184939,
           type: "info",
-          text: "Mason Circle",
+          text: "Nội dung tooltip",
           draggable: true,
           args: "dkljsldkfjlds",
         },
@@ -100,10 +109,8 @@ const objects: VitualType = {
         {
           pitch: -0.6,
           yaw: 37.1,
-          rotateX: 20,
-          rotateZ: 65,
-          type: "scene",
-          text: "Mason Circle",
+          type: "location",
+          text: "Nội dung tooltip",
           sceneId: "house",
         },
       ],

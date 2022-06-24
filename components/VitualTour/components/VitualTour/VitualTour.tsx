@@ -121,7 +121,7 @@ const VitualTour = ({ vituals, galleries }: Props) => {
     return vituals.scenes.reduce((object: any, current: VitualSceneType) => {
       return {
         ...object,
-        [current._id]: { ...current },
+        [current._id]: { ...current, cssMaker: "custom-maker" },
       };
     }, {});
   }, [vituals]);
@@ -166,11 +166,17 @@ const VitualTour = ({ vituals, galleries }: Props) => {
         const hfov = viewer.getHfov();
         const pitch = viewer.getPitch();
         const yaw = viewer.getYaw();
+        console.log({ hfov, pitch, yaw });
+
         setPosition({ hfov, pitch, yaw });
       });
 
       viewer.setClickHandler(({ ...rest }) => {
-        alert("Hotspot: " + JSON.stringify(rest.args));
+        if (rest.type == "info") {
+          alert("Info: " + JSON.stringify(rest.args));
+        } else if (rest.type == "phone") {
+          alert("Phone: " + rest.args.phone);
+        }
       });
     }
   }, [viewer, position, sceneId, info]);
