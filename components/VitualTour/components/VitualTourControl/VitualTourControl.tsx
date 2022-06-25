@@ -35,16 +35,16 @@ const ConfirmModalAudio = ({
   return toggleModal ? (
     <div className={styles["custom-modal-container"]}>
       <div className={styles["custom-modal"]}>
-        <span>Bạn có muốn giữ lại âm thanh không?</span>
+        <span>Bạn có muốn bật âm thanh không?</span>
         <div className={styles["custom-modal-button-group"]}>
           <button className={styles["custom-modal-button"]} onClick={onYes}>
-            Bật
+            Có
           </button>
           <button
             className={`${styles["custom-modal-button"]} ${styles["custom-modal-button-no"]}`}
             onClick={onNo}
           >
-            Tắt
+            Không
           </button>
         </div>
       </div>
@@ -52,10 +52,31 @@ const ConfirmModalAudio = ({
   ) : null;
 };
 
+const useAudio = () => {
+  const [audio] = React.useState(new Audio());
+  const [audioURL, setAudioURL] = React.useState<string>("");
+  const [muted, setMuted] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    audio.load();
+    audio.src = audioURL;
+    audio.autoplay = true;
+    audio.muted = !muted;
+  }, [muted, audioURL]);
+
+  React.useEffect(() => {
+    audio.addEventListener("ended", () => audio.play());
+    return () => {
+      audio.removeEventListener("ended", () => audio.play());
+    };
+  }, []);
+
+  return { muted, setMuted, setAudioURL };
+};
+
 const VitualTourControl = ({ viewer, loaded }: Props) => {
   const [fullscreen, setFullscreen] = React.useState<boolean>(false);
-  const [toggleVolume, setToggleVolume] = React.useState<boolean>(true);
-  const audioRef = React.createRef<HTMLAudioElement>();
+  const { muted, setMuted, setAudioURL } = useAudio();
 
   const onFullScreen = () => {
     setFullscreen(!fullscreen);
@@ -70,48 +91,28 @@ const VitualTourControl = ({ viewer, loaded }: Props) => {
     viewer?.setHfov(viewer.getHfov() + 10);
   };
 
-  React.useEffect(() => {
-    audioRef.current?.addEventListener("ended", () => audioRef.current?.play());
-    return () => {
-      audioRef.current?.removeEventListener("ended", () =>
-        audioRef.current?.play()
-      );
-    };
-  }, [audioRef.current]);
-
-  const toggleMutedAudio = () => {
-    if (audioRef.current) {
-      setToggleVolume(!toggleVolume);
-      audioRef.current.muted = toggleVolume;
-    }
-  };
-
   const modalChangeVolume = (status: boolean) => {
-    if (audioRef.current) {
-      audioRef.current.muted = status;
-      setToggleVolume(!status);
-    }
+    setMuted(!status);
   };
+
+  React.useEffect(() => {
+    if (viewer) {
+      setAudioURL(viewer.audio);
+    }
+  }, [viewer]);
 
   return (
     <>
       {!loaded && <ConfirmModalAudio onDone={modalChangeVolume} />}
-      <audio
-        ref={audioRef}
-        src={viewer?.audio}
-        autoPlay={true}
-        controls={true}
-        muted={false}
-        style={{ display: "none" }}
-      />
+
       <div className={styles.controlsWrapper}>
         <div className={styles.controls}>
           <div
             className={styles.ctrl}
-            onClick={toggleMutedAudio}
+            onClick={() => setMuted(!muted)}
             title="Tắt/Bật âm thanh"
           >
-            {toggleVolume ? <FaVolumeUp /> : <FaVolumeMute />}
+            {muted ? <FaVolumeUp /> : <FaVolumeMute />}
           </div>
         </div>
         <div className={styles.controls}>
