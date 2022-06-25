@@ -15,9 +15,9 @@ type Props = {
   galleries?: GalleryType[];
   sceneId: string;
   loadScene: (sceneId: string) => void;
-  onToggle: () => void;
+  onToggle: (status: boolean) => void;
   toggle: boolean;
-  slidesPerView: number;
+  // slidesPerView: number;
   content?: string;
   infoGalleries?: string[];
 };
@@ -70,11 +70,30 @@ const VitualTourGallery = ({
   loadScene,
   onToggle,
   toggle,
-  slidesPerView,
   content,
   infoGalleries,
 }: Props) => {
+  const [swiper, setSwiper] = React.useState<any>();
   const [infoModal, setInfoModal] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    const filteredIndex = galleries?.findIndex(
+      (item) => item.sceneId === sceneId
+    );
+    swiper?.slideTo(filteredIndex);
+  }, [sceneId]);
+
+  const checkScreen = () => {
+    if (window.innerWidth < 768) {
+      onToggle(false);
+    } else {
+      onToggle(true);
+    }
+  };
+
+  React.useEffect(() => {
+    checkScreen();
+  }, []);
 
   const prevButton = () => {
     if (galleries) {
@@ -148,7 +167,10 @@ const VitualTourGallery = ({
             }}
             className={styles["pnlm-gallery"]}
           >
-            <div className={styles["pnlm-gallery-control"]} onClick={onToggle}>
+            <div
+              className={styles["pnlm-gallery-control"]}
+              onClick={() => onToggle(toggle)}
+            >
               <button
                 className={
                   styles[
@@ -160,7 +182,24 @@ const VitualTourGallery = ({
               ></button>
             </div>
             <Swiper
-              slidesPerView={slidesPerView}
+              breakpoints={{
+                340: {
+                  slidesPerView: 2,
+                },
+                768: {
+                  slidesPerView: 3,
+                },
+                968: {
+                  slidesPerView: 4,
+                },
+                1300: {
+                  slidesPerView: 6,
+                },
+                1500: {
+                  slidesPerView: 10,
+                },
+              }}
+              onSwiper={setSwiper}
               navigation={true}
               modules={[Navigation]}
               className={`${styles["pnlm-gallery-container"]} pnlm-gallery-container`}

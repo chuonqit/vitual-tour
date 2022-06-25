@@ -35,13 +35,16 @@ const objects: VitualType = {
       panorama: "/panoramas/25_6_2022_fpoly_1 - Panorama_5 - Panorama.jpg",
       hotSpots: [
         {
+          id: "h1",
           pitch: -1.6817577380068454,
           yaw: -7.47775691446502,
           type: "location",
           text: "Đi vao trường",
           sceneId: "s2",
+          // draggable: true,
         },
         {
+          id: "h2",
           pitch: 2.2525645875702685,
           yaw: 69.62000532412344,
           type: "location",
@@ -65,6 +68,7 @@ const objects: VitualType = {
       },
       hotSpots: [
         {
+          id: "h3",
           pitch: -12.159867651311774,
           yaw: 4.124520086838669,
           type: "location",
@@ -75,6 +79,7 @@ const objects: VitualType = {
           scale: 2,
         },
         {
+          id: "h4",
           pitch: -16.458667426406652,
           yaw: -52.48980602263002,
           type: "location",
@@ -85,6 +90,7 @@ const objects: VitualType = {
           sceneId: "s5",
         },
         {
+          id: "h5",
           pitch: -0.31206132707564577,
           yaw: 111.12476164182975,
           type: "location",
@@ -107,6 +113,7 @@ const objects: VitualType = {
       },
       hotSpots: [
         {
+          id: "h6",
           pitch: 1.4055932721675313,
           yaw: 158.44165845810073,
           type: "location",
@@ -114,6 +121,7 @@ const objects: VitualType = {
           sceneId: "s5",
         },
         {
+          id: "h7",
           pitch: 1.2951617304721086,
           yaw: 120.4941583923635,
           type: "location",
@@ -132,6 +140,7 @@ const objects: VitualType = {
       panorama: "/panoramas/25_6_2022_fpoly_1 - Panorama_1 - Panorama.jpg",
       hotSpots: [
         {
+          id: "h8",
           pitch: -0.6,
           yaw: 37.1,
           type: "location",
@@ -139,6 +148,7 @@ const objects: VitualType = {
           sceneId: "s3",
         },
         {
+          id: "h9",
           pitch: 1.2588168728243564,
           yaw: 149.5344376965289,
           type: "location",
@@ -146,6 +156,7 @@ const objects: VitualType = {
           sceneId: "s2",
         },
         {
+          id: "h10",
           pitch: -0.4715513658380949,
           yaw: -138.89816216143754,
           type: "location",
@@ -164,6 +175,7 @@ const objects: VitualType = {
       panorama: "/panoramas/25_6_2022_fpoly_1 - Panorama_3 - Panorama.jpg",
       hotSpots: [
         {
+          id: "h11",
           pitch: -0.6,
           yaw: 37.1,
           type: "location",
@@ -171,6 +183,7 @@ const objects: VitualType = {
           sceneId: "s4",
         },
         {
+          id: "h12",
           pitch: 0.526137804340487,
           yaw: 89.87705307569496,
           type: "location",
@@ -189,6 +202,7 @@ const objects: VitualType = {
       panorama: "/panoramas/25_6_2022_fpoly_1 - Panorama_6 - Panorama.jpg",
       hotSpots: [
         {
+          id: "h13",
           pitch: -0.6,
           yaw: 37.1,
           type: "location",
@@ -196,6 +210,7 @@ const objects: VitualType = {
           sceneId: "s7",
         },
         {
+          id: "h14",
           pitch: 0.1688714249333521,
           yaw: -49.11504008604996,
           type: "location",
@@ -214,6 +229,7 @@ const objects: VitualType = {
       panorama: "/panoramas/25_6_2022_fpoly_1 - Panorama_7 - Panorama.jpg",
       hotSpots: [
         {
+          id: "h15",
           pitch: 0.7617120873809606,
           yaw: -62.062604878692554,
           rotateZ: 50,

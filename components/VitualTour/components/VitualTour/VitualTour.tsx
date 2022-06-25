@@ -34,7 +34,13 @@ type TInfo = {
   };
 };
 
-const Loading = ({ speed }: { speed: number }) => {
+const Loading = ({
+  speed,
+  onDone,
+}: {
+  speed: number;
+  onDone: (status: boolean) => void;
+}) => {
   const [percent, setPercent] = React.useState<number>(0);
   const [styleProgressBar, setStyleProgressBar] = React.useState<string>("");
 
@@ -59,6 +65,12 @@ const Loading = ({ speed }: { speed: number }) => {
 
     return () => clearInterval(progress);
   }, []);
+
+  React.useEffect(() => {
+    if (percent == 100) {
+      onDone(false);
+    }
+  }, [percent]);
 
   return (
     <div
@@ -92,30 +104,13 @@ const VitualTour = ({ vituals, galleries }: Props) => {
   const [toggle, setToggle] = React.useState<boolean>(false);
   const [annotaionToggle, setAnnotaionToggle] = React.useState<boolean>(false);
   const [loaded, setLoaded] = React.useState<boolean>(true);
-  const [slidesPerView, setSlidesPerView] = React.useState<number>(10);
   const pannellumRef = React.createRef<HTMLDivElement>();
 
-  const menuToggle = () => setToggle(!toggle);
+  const menuToggle = (status: boolean) => setToggle(!status);
 
   const changeScene = (sceneId: string) => {
     viewer?.loadScene(sceneId);
     setSceneId(sceneId);
-  };
-
-  const checkScreenSlide = () => {
-    if (window.innerWidth < 1000) {
-      setAnnotaionToggle(true);
-      setSlidesPerView(5);
-    } else if (window.innerWidth < 768) {
-      setAnnotaionToggle(true);
-      setSlidesPerView(3);
-    } else if (window.innerWidth < 568) {
-      setAnnotaionToggle(true);
-      setSlidesPerView(2);
-    } else if (window.innerWidth > 1200) {
-      setAnnotaionToggle(false);
-      setSlidesPerView(10);
-    }
   };
 
   const sceneData = React.useMemo(() => {
@@ -128,22 +123,10 @@ const VitualTour = ({ vituals, galleries }: Props) => {
   }, [vituals]);
 
   React.useEffect(() => {
-    const loader = setTimeout(() => {
-      setLoaded(false);
-    }, 1500);
-
-    return () => clearTimeout(loader);
-  }, []);
-
-  React.useEffect(() => {
     const viewer = Pannellum.viewer(pannellumRef.current, {
       default: vituals.default,
       info: vituals.info,
       scenes: sceneData,
-    });
-
-    viewer.on("mousedown", (event: MouseEvent) => {
-      console.log(viewer.mouseEventToCoords(event));
     });
 
     setViewer(viewer);
@@ -174,6 +157,10 @@ const VitualTour = ({ vituals, galleries }: Props) => {
         setPosition({ hfov, pitch, yaw });
       });
 
+      viewer.dragHandlerFunc(({ ...args }) => {
+        console.log(args);
+      });
+
       viewer.setClickHandler(({ ...rest }) => {
         if (rest.type == "info") {
           alert("Info: " + JSON.stringify(rest.args));
@@ -184,22 +171,14 @@ const VitualTour = ({ vituals, galleries }: Props) => {
     }
   }, [viewer, position, sceneId, info]);
 
-  React.useEffect(() => {
-    checkScreenSlide();
-
-    window.addEventListener("resize", checkScreenSlide);
-
-    return () => window.removeEventListener("resize", checkScreenSlide);
-  }, []);
-
   return (
     <>
-      <Loading speed={20} />
+      <Loading speed={30} onDone={setLoaded} />
       <div
         className={styles["vitual-tour"]}
         style={{ opacity: loaded ? 0 : 1 }}
       >
-        <VitualTourControl viewer={viewer} toggle={toggle} />
+        <VitualTourControl viewer={viewer} loaded={loaded} />
         <div className={styles["vitual-header"]}>
           {info?.name && (
             <div className={styles["vitual-header-name"]}>{info.name}</div>
@@ -239,7 +218,6 @@ const VitualTour = ({ vituals, galleries }: Props) => {
           galleries={galleries}
           sceneId={sceneId}
           toggle={toggle}
-          slidesPerView={slidesPerView}
           onToggle={menuToggle}
           loadScene={(scene) => changeScene(scene)}
           content={info?.content}
