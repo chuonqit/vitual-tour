@@ -109,7 +109,10 @@ const VitualTour = ({ vituals, galleries }: Props) => {
     } else if (window.innerWidth < 768) {
       setAnnotaionToggle(true);
       setSlidesPerView(3);
-    } else {
+    } else if (window.innerWidth < 568) {
+      setAnnotaionToggle(true);
+      setSlidesPerView(2);
+    } else if (window.innerWidth > 1200) {
       setAnnotaionToggle(false);
       setSlidesPerView(10);
     }
@@ -139,6 +142,10 @@ const VitualTour = ({ vituals, galleries }: Props) => {
       scenes: sceneData,
     });
 
+    viewer.on("mousedown", (event: MouseEvent) => {
+      console.log(viewer.mouseEventToCoords(event));
+    });
+
     setViewer(viewer);
 
     return () => viewer.destroy();
@@ -164,8 +171,6 @@ const VitualTour = ({ vituals, galleries }: Props) => {
         const hfov = viewer.getHfov();
         const pitch = viewer.getPitch();
         const yaw = viewer.getYaw();
-        console.log({ hfov, pitch, yaw });
-
         setPosition({ hfov, pitch, yaw });
       });
 

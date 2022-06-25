@@ -587,13 +587,17 @@ div.pnlm-tooltip:hover span:after {
   /* transform: rotateX(65deg) rotateZ(315deg) !important; */
 }
 
+.custom-maker {
+  min-width: 50px;
+  min-height: 50px;
+}
+
 .custom-maker .pnlm-hotspot-maker {
   min-width: 50px;
   min-height: 50px;
   background-color: #ff5b00;
   color: #ffffff;
   font-size: 27px;
-  top: 100%;
   position: absolute;
   border-radius: 50%;
   cursor: pointer;
