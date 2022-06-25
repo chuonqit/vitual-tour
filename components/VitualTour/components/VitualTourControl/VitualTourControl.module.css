@@ -49,6 +49,29 @@
   color: #fff;
 }
 
+.ctrlVolume {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  position: absolute;
+}
+
+.ctrlVolume input[type="range"] {
+  display: none;
+  width: 70px;
+  -webkit-appearance: none;
+  background-color: #ff5b00;
+  accent-color: #fff;
+  border-radius: 5px;
+  height: 8px;
+  cursor: pointer;
+}
+
+.ctrlVolume:hover input {
+  display: block;
+}
+
 @media (max-width: 768px) {
   .order-1 {
     order: 1 !important;

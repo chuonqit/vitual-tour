@@ -171,6 +171,12 @@ const VitualTour = ({ vituals, galleries }: Props) => {
     }
   }, [viewer, position, sceneId, info]);
 
+  React.useEffect(() => {
+    if (window.innerWidth < 768) {
+      setAnnotaionToggle(true);
+    }
+  }, []);
+
   return (
     <>
       <Loading speed={30} onDone={setLoaded} />
@@ -190,7 +196,7 @@ const VitualTour = ({ vituals, galleries }: Props) => {
         <div
           className={styles["annotation"]}
           style={{
-            transform: annotaionToggle ? "translateX(-286px)" : "translateX(0)",
+            transform: annotaionToggle ? "translateX(-386px)" : "translateX(0)",
           }}
         >
           {info?.annotation && (

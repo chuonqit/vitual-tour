@@ -606,7 +606,14 @@ div.pnlm-tooltip:hover span:after {
   align-items: center;
   justify-content: center;
   transform: var(--transform) scale(1);
-  animation: makerAnim 450ms infinite;
+  opacity: 0;
+  animation: makerAnim 450ms infinite, makerAnimShow 450ms forwards 450ms;
+}
+
+@keyframes makerAnimShow {
+  100% {
+    opacity: 1;
+  }
 }
 
 @media (max-width: 768px) {
