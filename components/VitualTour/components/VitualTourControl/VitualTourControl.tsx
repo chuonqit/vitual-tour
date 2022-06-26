@@ -58,7 +58,6 @@ const ConfirmModalAudio = ({
 const useAudio = () => {
   const [audio] = React.useState(new Audio());
   const [audioURL, setAudioURL] = React.useState<string>("");
-  const [volume, setVolume] = React.useState<number>(1);
   const [playing, setPlaying] = React.useState<boolean>(false);
 
   const togglePlay = () => setPlaying(!playing);
@@ -71,13 +70,8 @@ const useAudio = () => {
   }, [audioURL]);
 
   React.useEffect(() => {
-    if (playing) {
-      audio.play();
-    } else {
-      audio.pause();
-    }
-    audio.volume = volume;
-  }, [playing, volume]);
+    playing ? audio.play() : audio.pause();
+  }, [playing]);
 
   React.useEffect(() => {
     audio.addEventListener("ended", () => {
@@ -94,13 +88,12 @@ const useAudio = () => {
     };
   }, []);
 
-  return { volume, setVolume, playing, setPlaying, setAudioURL, togglePlay };
+  return { playing, setPlaying, setAudioURL, togglePlay };
 };
 
 const VitualTourControl = ({ viewer, loaded }: Props) => {
   const [fullscreen, setFullscreen] = React.useState<boolean>(false);
-  const { volume, setVolume, playing, setPlaying, togglePlay, setAudioURL } =
-    useAudio();
+  const { playing, setPlaying, togglePlay, setAudioURL } = useAudio();
 
   const onFullScreen = () => {
     setFullscreen(!fullscreen);
@@ -117,7 +110,6 @@ const VitualTourControl = ({ viewer, loaded }: Props) => {
 
   const modalChangeVolume = (status: boolean) => {
     setPlaying(status);
-    setVolume(1);
   };
 
   React.useEffect(() => {
@@ -132,32 +124,11 @@ const VitualTourControl = ({ viewer, loaded }: Props) => {
 
       <div className={styles.controlsWrapper}>
         <div className={styles.controls}>
-          <div className={styles.ctrl} onClick={() => togglePlay()}>
-            {playing ? <FaPause title="Tạm dừng" /> : <FaPlay title="Phát" />}
-          </div>
-          {playing && (
-            <div className={styles.ctrl}>
-              <div className={styles.ctrlVolume}>
-                <div onClick={() => setVolume(volume == 0 ? 1 : 0)}>
-                  {volume > 0.6 ? (
-                    <FaVolumeUp />
-                  ) : volume > 0 ? (
-                    <FaVolumeDown />
-                  ) : (
-                    <FaVolumeMute />
-                  )}
-                </div>
-                <input
-                  type="range"
-                  min={0}
-                  max={1}
-                  step={0.1}
-                  value={volume}
-                  onChange={(e) => setVolume(Number(e.target.value))}
-                />
-              </div>
+          <div className={styles.ctrl}>
+            <div className={styles.ctrlVolume} onClick={() => togglePlay()}>
+              {playing ? <FaVolumeUp /> : <FaVolumeMute />}
             </div>
-          )}
+          </div>
         </div>
         <div className={styles.controls}>
           <div

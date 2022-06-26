@@ -171,10 +171,16 @@ const VitualTour = ({ vituals, galleries }: Props) => {
     }
   }, [viewer, position, sceneId, info]);
 
-  React.useEffect(() => {
+  const checkScreen = () => {
     if (window.innerWidth < 768) {
       setAnnotaionToggle(true);
+    } else {
+      setAnnotaionToggle(false);
     }
+  };
+
+  React.useEffect(() => {
+    checkScreen();
   }, []);
 
   return (

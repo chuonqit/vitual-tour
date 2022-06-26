@@ -4,10 +4,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import "swiper/css/free-mode";
+import "swiper/css/thumbs";
 
 import styles from "./VitualTourGallery.module.css";
 
-import { Navigation } from "swiper";
+import { FreeMode, Navigation, Thumbs } from "swiper";
 import { GalleryType } from "../../libs/VitualType";
 import { FaInfo, FaRegImages } from "react-icons/fa";
 
@@ -17,7 +19,6 @@ type Props = {
   loadScene: (sceneId: string) => void;
   onToggle: (status: boolean) => void;
   toggle: boolean;
-  // slidesPerView: number;
   content?: string;
   infoGalleries?: string[];
 };
@@ -64,6 +65,66 @@ const InfoModal = ({
   ) : null;
 };
 
+const GalleryModal = ({
+  show,
+  galleries,
+  onToggle,
+}: {
+  show: boolean;
+  galleries?: string[];
+  onToggle: () => void;
+}) => {
+  const [thumbsSwiper, setThumbsSwiper] = React.useState<any>();
+
+  return show ? (
+    <>
+      <div className={styles["modal-gallery"]}>
+        <div className={styles["modal-gallery-wrapper"]}>
+          <button
+            type="button"
+            className={styles["modal-gallery-header-button"]}
+            onClick={onToggle}
+          >
+            <span>&times;</span>
+          </button>
+          <Swiper
+            spaceBetween={10}
+            navigation={true}
+            thumbs={{
+              swiper:
+                thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
+            }}
+            modules={[FreeMode, Navigation, Thumbs]}
+            className="pnlm-galleries-info-main"
+          >
+            {galleries?.map((item, key) => (
+              <SwiperSlide key={key}>
+                <img src={item} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          <Swiper
+            onSwiper={setThumbsSwiper}
+            spaceBetween={10}
+            slidesPerView={12}
+            freeMode={true}
+            watchSlidesProgress={true}
+            modules={[FreeMode, Navigation, Thumbs]}
+            className="pnlm-galleries-info-thumbs"
+          >
+            {galleries?.map((item, key) => (
+              <SwiperSlide key={key}>
+                <img src={item} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </div>
+      <div className={styles["modal-gallery-overlay"]} onClick={onToggle} />
+    </>
+  ) : null;
+};
+
 const VitualTourGallery = ({
   galleries,
   sceneId,
@@ -75,6 +136,7 @@ const VitualTourGallery = ({
 }: Props) => {
   const [swiper, setSwiper] = React.useState<any>();
   const [infoModal, setInfoModal] = React.useState<boolean>(false);
+  const [galleryModal, setGalleryModal] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     const filteredIndex = galleries?.findIndex(
@@ -142,6 +204,7 @@ const VitualTourGallery = ({
         {infoGalleries && infoGalleries.length > 0 && (
           <div
             className={styles["controls-bottom-button"]}
+            onClick={() => setGalleryModal(!galleryModal)}
             title="Thư viên hình ảnh"
           >
             <FaRegImages />
@@ -153,6 +216,12 @@ const VitualTourGallery = ({
         content={content}
         show={infoModal}
         onToggle={() => setInfoModal(!infoModal)}
+      />
+
+      <GalleryModal
+        show={galleryModal}
+        galleries={infoGalleries}
+        onToggle={() => setGalleryModal(!galleryModal)}
       />
 
       {galleries && galleries.length > 0 && (
